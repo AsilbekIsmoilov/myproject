@@ -1,0 +1,134 @@
+{% load static %}
+<form method="get" id="operator-form">
+<div class="block1">
+    <div class="group1">
+        <div class="logo-div" style="position: relative; cursor: pointer;">
+            <img id="logo-img"
+                 src="{% static 'img/logo.png' %}"
+                 alt="Company Logo">
+        </div>
+        <a href="{% url 'list2' %}?operator-name={{ selected_operator.name }}">
+            <div class="score-div">
+                <canvas id="scoreChart" width="150" height="150"></canvas>
+                <div class="radial-text">
+                    <div class="score-number">
+                        {% if monthly_scores %}
+                            {{ monthly_scores.mark }}
+                        {% else %}
+                            {{ selected_operator.mark }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="group2">
+        <div class="month-div">
+            <div class="input-wrapper">
+                <i class="fa fa-search" aria-hidden="true"></i>
+                <input type="text" id="operator-name" name="operator-name"
+                       placeholder="                              Поиск"
+                       oninput="filterDropdown()" autocomplete="off"
+                       {% if selected_operator %}
+                       value="{{ selected_operator.name }}"
+                       {% endif %}>
+            </div>
+            <div id="dropdown">
+                {% for operator in operators %}
+                <div class="dropdown-item" data-name="{{ operator.name }}">
+                    {{ operator.name }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="status-div">
+            <p class="status-label">Статус: </p>
+            <div class="status info">
+                {% if monthly_scores %}
+                    {{ monthly_scores.bl }}
+                {% else %}
+                    {{ selected_operator.bl }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Профиль пользователя -->
+    <div class="group3">
+        <div class="profile-info">
+            <div class="profile-name">
+                {{ selected_operator.name|truncatechars:38 }}
+            </div>
+            <div class="profile-group">
+                {{ selected_operator.group }}
+            </div>
+
+            {% if selected_operator and month_names_in_db %}
+            <div class="profile-date">
+                <form method="get">
+                    <label for="month-select"></label>
+                    <select name="month" id="month-select" onchange="this.form.submit()">
+                        {% for month, month_name in month_names_in_db %}
+                            <option value="{{ month }}" {% if month == selected_month %}selected{% endif %}>
+                                {{ month_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="profile-photo">
+            {% if selected_operator.photo %}
+                <img src="{{ selected_operator.photo.url }}" alt="Operator Photo">
+            {% else %}
+                <img src="{% static 'img/profile.png' %}" alt="Default Avatar"
+                     style="width:160px;height:215px">
+            {% endif %}
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+</form>
+
+<script>
+const backgrounds = [
+    "url('/static/img/ttt.jpg')",
+    "url('/static/img/background.jpg')",
+];
+
+let bgIndex = 0;
+let isCooldown = false;
+
+window.addEventListener('load', () => {
+    const savedBg = localStorage.getItem('backgroundImage');
+
+    // Если ранее сохранённого фона нет — установить дефолтный (первый из списка)
+    if (!savedBg) {
+        const defaultBg = backgrounds[0];
+        document.body.style.backgroundImage = defaultBg;
+        localStorage.setItem('backgroundImage', defaultBg);
+    } else {
+        document.body.style.backgroundImage = savedBg;
+    }
+
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundPosition = "center";
+});
+
+document.getElementById('logo-img').addEventListener('click', () => {
+    if (isCooldown) return;
+
+    const newBg = backgrounds[bgIndex];
+    document.body.style.backgroundImage = newBg;
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundPosition = "center";
+    document.body.style.transition = "background-image 0.5s ease-in-out";
+
+    localStorage.setItem('backgroundImage', newBg);
+    bgIndex = (bgIndex + 1) % backgrounds.length;
+});
+</script>

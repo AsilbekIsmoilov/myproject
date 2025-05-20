@@ -1,0 +1,59 @@
+{% load static %}
+
+<div class="block3">
+        <h2 class="comment-title">Комментарий</h2>
+    <div class="comment-box">
+        <br>
+        <p>1) {% if monthly_scores %}{{ monthly_scores.comment1|default:"" }}{% else %}{{ selected_operator.comment1|default:"" }}{% endif %}</p>
+        <br>
+        <hr>
+        <br>
+        <p>2) {% if monthly_scores %}{{ monthly_scores.comment2|default:"" }}{% else %}{{ selected_operator.comment2|default:"" }}{% endif %}</p>
+        <br>
+        <hr>
+        <br>
+        <p>3) {% if monthly_scores %}{{ monthly_scores.comment3|default:"" }}{% else %}{{ selected_operator.comment3|default:"" }}{% endif %}</p>
+        <br>
+        <hr>
+        <br>
+        <p>4) {% if monthly_scores %}{{ monthly_scores.comment4|default:"" }}{% else %}{{ selected_operator.comment4|default:"" }}{% endif %}</p>
+        <br>
+        <hr>
+        <br>
+        <p>5) {% if monthly_scores %}{{ monthly_scores.comment5|default:"" }}{% else %}{{ selected_operator.comment5|default:"" }}{% endif %}</p>
+        <br>
+        <hr>
+        <br>
+        <p>6) {% if monthly_scores %}{{ monthly_scores.comment6|default:"" }}{% else %}{{ selected_operator.comment6|default:"" }}{% endif %}</p>
+        <br>
+        <hr>
+        <br>
+        <p>7) {% if monthly_scores %}{{ monthly_scores.comment7|default:"" }}{% else %}{{ selected_operator.comment7|default:"" }}{% endif %}</p>
+        <br>
+        <hr>
+        <br>
+        <p>8) {% if monthly_scores %}{{ monthly_scores.comment8|default:"" }}{% else %}{{ selected_operator.comment8|default:"" }}{% endif %}</p>
+        <br>
+        <hr>
+        <br>
+        <p>9) {% if monthly_scores %}{{ monthly_scores.comment9|default:"" }}{% else %}{{ selected_operator.comment9|default:"" }}{% endif %}</p>
+        <br>
+        <hr>
+        <br>
+        <p>10) {% if monthly_scores %}{{ monthly_scores.comment10|default:"" }}{% else %}{{ selected_operator.comment10|default:"" }}{% endif %}</p>
+    </div>
+    <div class="error-types">
+        <div class="error-type">
+            <div class="error-circle">{% if monthly_scores %}{{ monthly_scores.mis1|default:0 }}{% else %}{{selected_operator.mis1|default:0}}{% endif %}</div>
+            <span>Ошибка(-25)</span>
+        </div>
+        <div class="error-type">
+            <div class="error-circle">{% if monthly_scores %}{{ monthly_scores.mis2|default:0 }}{% else %}{{selected_operator.mis2|default:0}}{% endif %}</div>
+            <span>Ошибка(-10)</span>
+        </div>
+        <div class="error-type">
+            <div class="error-circle">{% if monthly_scores %}{{ monthly_scores.mis3|default:0 }}{% else %}{{selected_operator.mis3|default:0}}{% endif %}</div>
+            <span>Недочет(-2)</span>
+        </div>
+    </div>
+</div>
