@@ -62,7 +62,6 @@ def index(request):
             months_in_db = sorted(int(m) for m in months_set)
             month_names_in_db = [(f"{m:02}", month_pairs.get(m)) for m in months_in_db]
 
-            # ✅ Определяем месяц и источник баллов
             if selected_month_param:
                 try:
                     selected_month_int = int(selected_month_param)
@@ -414,3 +413,7 @@ def update_process(request, action):
         sys.stdout = old_stdout
 
     return HttpResponse(f"<pre>{mystdout.getvalue()}</pre>", )
+
+
+
+# Для теста добавлен
