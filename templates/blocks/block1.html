@@ -8,18 +8,20 @@
                  alt="Company Logo">
         </div>
         <a href="{% url 'list2' %}?operator-name={{ selected_operator.name }}">
-            <div class="score-div">
-                <canvas id="scoreChart" width="150" height="150"></canvas>
-                <div class="radial-text">
-                    <div class="score-number">
-                        {% if monthly_scores %}
-                            {{ monthly_scores.mark }}
-                        {% else %}
-                            {{ selected_operator.mark }}
-                        {% endif %}
-                    </div>
+        <div class="score-div">
+            <canvas id="scoreChart" width="150" height="150"></canvas>
+            <div class="radial-text">
+                <div class="score-number">
+                    {% if monthly_scores and monthly_scores.mark is not none %}
+                        {{ monthly_scores.mark }}
+                    {% elif selected_operator and selected_operator.mark is not none %}
+                        {{ selected_operator.mark }}
+                    {% else %}
+                        Нет данных
+                    {% endif %}
                 </div>
             </div>
+        </div>
         </a>
     </div>
 

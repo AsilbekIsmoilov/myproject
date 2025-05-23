@@ -267,7 +267,7 @@ def update_call_data():
 
         mark_value = safe_convert_decimal(record['mark'])
         if mark_value == 0:
-            mark_value = 87.5
+            mark_value = None
 
         call_data, created = CallData.objects.update_or_create(
             name=record['name'],
@@ -534,7 +534,7 @@ def get_archive():
         mark = row[5].strip() if len(row) > 5 else None
         mark_decimal = safe_convert_decimal(mark)
         if mark_decimal == 0:
-            mark_decimal = 87.5
+            mark_decimal = None
         bl = row[2] if len(row) > 2 else ""
         group = row[3] if len(row) > 3 else ""
         code1 = row[6] if len(row) > 6 else ""
