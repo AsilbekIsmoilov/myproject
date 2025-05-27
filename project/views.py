@@ -5,7 +5,7 @@ import django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
 django.setup()
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from project.models import *
 import datetime
@@ -14,6 +14,9 @@ from io import StringIO
 from project.sheets import get_archive,update_call_data
 from datetime import datetime
 from statistics import mean
+from django.views.decorators.csrf import csrf_exempt
+import requests
+
 
 
 
@@ -413,7 +416,6 @@ def update_process(request, action):
         sys.stdout = old_stdout
 
     return HttpResponse(f"<pre>{mystdout.getvalue()}</pre>", )
-
 
 
 # Для теста добавлен
