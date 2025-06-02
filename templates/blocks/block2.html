@@ -164,7 +164,7 @@
         <div class="score">{% if monthly_scores %}{{ monthly_scores.warning10|default:"" }}{% else %}{{ selected_operator.warning10|default:"" }}{% endif %}</div>
     </div>
     <div class="row">
-        <div class="criteria">{% if selected_operator.group == "1009"%}Скорость обслуживания{% else %}Эмоциональная окраска голоса / Темп диалога {% endif %}</div>
+        <div class="criteria">{% if selected_operator.group == "1009"%}Скорость обслуживания{% else %}Эмоциональная окраска голоса{% endif %}</div>
         <div class="score">{% if monthly_scores %}{{ monthly_scores.emotion1|default:"" }}{% else %}{{ selected_operator.emotion1|default:"" }}{% endif %}</div>
         <div class="score">{% if monthly_scores %}{{ monthly_scores.emotion2|default:"" }}{% else %}{{ selected_operator.emotion2|default:"" }}{% endif %}</div>
         <div class="score">{% if monthly_scores %}{{ monthly_scores.emotion3|default:"" }}{% else %}{{ selected_operator.emotion3|default:"" }}{% endif %}</div>
@@ -177,7 +177,7 @@
         <div class="score">{% if monthly_scores %}{{ monthly_scores.emotion10|default:"" }}{% else %}{{ selected_operator.emotion10|default:"" }}{% endif %}</div>
     </div>
     <div class="row">
-        <div class="criteria">{% if selected_operator.group == "1009"%}Прощание {% else %}Быстрое решение вопроса {% endif %}</div>
+        <div class="criteria">Прощание</div>
         <div class="score">{% if monthly_scores %}{{ monthly_scores.solution1|default:"" }}{% else %}{{ selected_operator.solution1|default:"" }}{% endif %}</div>
         <div class="score">{% if monthly_scores %}{{ monthly_scores.solution2|default:"" }}{% else %}{{ selected_operator.solution2|default:"" }}{% endif %}</div>
         <div class="score">{% if monthly_scores %}{{ monthly_scores.solution3|default:"" }}{% else %}{{ selected_operator.solution3|default:"" }}{% endif %}</div>

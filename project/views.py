@@ -170,7 +170,7 @@ def get_criteria_penalties(operator, quarter):
     group = str(operator.group) if operator.group else ""
 
     criteria_titles = {
-        "greeting": "<div style='margin-top:5px; margin-bottom:10px;'>Приветствие</div>" if group == "1009" else "Приветствие / Прощание",
+        "greeting": "Приветствие",
         "hearing": "Внимательное слушание",
         "question": "Исп. уточняющих вопросов",
         "interest": "Заинтересованность в проблеме",
@@ -180,7 +180,7 @@ def get_criteria_penalties(operator, quarter):
         "note": 'Установка на "Удержание"' if group == "1009" else "Оформление и обработка заявок",
         "warning": "Предупреждение об ожидании",
         "emotion": "Скорость обслуживания" if group == "1009" else "Эмоц. окраска голоса / Темп д..",
-        "solution": "<div style='margin-top:5px; margin-bottom:10px;'>Прощание</div>" if group == "1009" else "Быстрое решение вопроса",
+        "solution": "<div style='margin-top:5px; margin-bottom:10px;'>Прощание</div>",
     }
 
     months = QUARTERS.get(quarter, [])
