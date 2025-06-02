@@ -14,8 +14,6 @@ from io import StringIO
 from project.sheets import get_archive,update_call_data
 from datetime import datetime
 from statistics import mean
-from django.views.decorators.csrf import csrf_exempt
-import requests
 
 
 

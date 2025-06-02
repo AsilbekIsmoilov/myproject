@@ -7,7 +7,7 @@ django.setup()
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from decimal import Decimal, InvalidOperation
-from project.models import CallData, ScoresForMonth, QuarterScores
+from project.models import CallData, ScoresForMonth
 from PIL import Image
 from io import BytesIO
 import hashlib
@@ -17,6 +17,8 @@ import re
 
 SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 CREDENTIALS = ServiceAccountCredentials.from_json_keyfile_name(r'C:\Users\j.khamidullaev\Documents\myproject\credentials.json', SCOPE)
+
+
 
 def safe_convert_decimal(value):
     try:
@@ -1114,4 +1116,5 @@ def get_quarter_scores():
     # update_call_data()
     # get_archive()
     # get_quarter_scores()
+
 

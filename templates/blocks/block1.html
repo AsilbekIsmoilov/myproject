@@ -70,10 +70,7 @@
             </div>
 
             {% if selected_operator and month_names_in_db %}
-            <div class="profile-date-with-note" style="display: flex; align-items: center;gap: 5px; margin-right: 50px;">
-                    <button type="button" class="note-btn" title="Monitoring guruhi tomonidan qo'yilgan baholarga e'tiroz qoldirish" onclick="openNotes()">
-    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-</button>
+            <div class="profile-date-with-note">
                 <form method="get">
                     <label for="month-select"></label>
                     <select name="month" id="month-select" onchange="this.form.submit()">
@@ -99,7 +96,6 @@
     </div>
     <div style="clear: both;"></div>
 </div>
-<!-- Модальное окно для заметок -->
 <div id="noteModal" class="modal" style="display: none;">
   <div class="modal-content">
     <span class="close" onclick="closeNotes()">&times;</span>
@@ -112,7 +108,7 @@
     <textarea id="callCode" rows="1" placeholder="Код звонка"></textarea><br><br>
 
     <h6>Комментарий:</h6>
-    <textarea id="commentText" rows="3" placeholder="Введите текст ..."></textarea><br><br>
+    <textarea id="commentText" rows="10" placeholder="Введите текст ..."></textarea><br><br>
 
     <button onclick="saveNote()">Отправить</button>
   </div>
@@ -157,47 +153,8 @@ document.getElementById('logo-img').addEventListener('click', () => {
     localStorage.setItem('backgroundImage', newBg);
     bgIndex = (bgIndex + 1) % backgrounds.length;
 });
-function openNotes() {
-  document.getElementById("noteModal").style.display = "flex";
-}
-
-// ✅ ДОБАВЛЕННАЯ ФУНКЦИЯ closeNotes
-function closeNotes() {
-  document.getElementById("noteModal").style.display = "none";
-}
-
-function saveNote() {
-  const operator = document.getElementById("operatorName").value.trim();
-  const callCode = document.getElementById("callCode").value.trim();
-  const comment = document.getElementById("commentText").value.trim();
-
-  if (!operator || !callCode || !comment) {
-    alert("Пожалуйста, заполните все поля.");
-    return;
-  }
-
-  fetch("https://script.google.com/macros/s/AKfycbxRv3QDTpCr7ttaFpPlGnXQt5R_x1N1FuQyR-AL-5MNF-OXflzJJa844H3HBBgjOYD1/exec", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      operator: operator,
-      callCode: callCode,
-      comment: comment
-    })
-  })
-  .then(res => res.json())
-  .then(result => {
-    if (result.status === "ok") {
-      alert("Комментарий отправлен!");
-      closeNotes?.();
-    } else {
-      alert("Ошибка: " + result.message);
-    }
-  })
-  .catch(error => {
-    alert("Ошибка запроса: " + error.message);
-  });
-}
 </script>
+
+
+
+
