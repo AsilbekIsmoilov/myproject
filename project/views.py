@@ -170,16 +170,16 @@ def get_criteria_penalties(operator, quarter):
     group = str(operator.group) if operator.group else ""
 
     criteria_titles = {
-        "greeting": "Приветствие",
+        "greeting": "<div style='margin-top:5px; margin-bottom:10px;'>Приветствие</div>",
         "hearing": "Внимательное слушание",
         "question": "Исп. уточняющих вопросов",
         "interest": "Заинтересованность в проблеме",
-        "cons": "Понятное пред.. информации" if group == "1009" else "Консультация / Понятное пред..",
+        "cons": "Понятное пред.. информации",
         "polite": "Доброжелательн.. Вежливость",
         "speech": "Грамотная<br>речь",
         "note": 'Установка на "Удержание"' if group == "1009" else "Оформление и обработка заявок",
         "warning": "Предупреждение об ожидании",
-        "emotion": "Скорость обслуживания" if group == "1009" else "Эмоц. окраска голоса / Темп д..",
+        "emotion": "Скорость обслуживания" if group == "1009" else "Эмоциональная окраска голоса",
         "solution": "<div style='margin-top:5px; margin-bottom:10px;'>Прощание</div>",
     }
 
