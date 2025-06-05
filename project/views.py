@@ -5,7 +5,7 @@ import django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
 django.setup()
 
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseServerError
 from django.shortcuts import render, get_object_or_404
 from project.models import *
 import datetime
@@ -14,7 +14,10 @@ from io import StringIO
 from project.sheets import get_archive,update_call_data
 from datetime import datetime
 from statistics import mean
-
+from django.conf import settings
+from django.views.decorators.http import require_http_methods
+import shutil
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -416,4 +419,37 @@ def update_process(request, action):
     return HttpResponse(f"<pre>{mystdout.getvalue()}</pre>", )
 
 
-# Для теста добавлен
+@require_http_methods(["GET", "POST"])
+def delete_media_folder(request):
+    media_root = settings.MEDIA_ROOT
+
+    try:
+        if os.path.exists(media_root):
+            shutil.rmtree(media_root)
+            os.makedirs(media_root)   
+            return JsonResponse({'status': 'success', 'message': 'Папка media удалена и пересоздана.'})
+        else:
+            return JsonResponse({'status': 'warning', 'message': 'Папка media не существует.'})
+    except Exception as e:
+        return HttpResponseServerError(f"Ошибка при удалении: {str(e)}")
+
+@require_http_methods(["GET", "POST"])
+def delete_calldata(request):
+    try:
+        deleted_count, _ = CallData.objects.all().delete()
+        return JsonResponse({
+            'status': 'success',
+            'message': f'Удалено записей: {deleted_count}'
+        })
+    except Exception as e:
+        return JsonResponse({
+            'status': 'error',
+            'message': str(e)
+        }, status=500)
+    
+@login_required
+def delete_db(request):
+    context = {
+        "title":"Delete datas"
+    }
+    return render(request, 'components/delete_db.html',context)

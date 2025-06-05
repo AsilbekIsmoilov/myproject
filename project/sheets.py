@@ -19,7 +19,6 @@ SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/au
 CREDENTIALS = ServiceAccountCredentials.from_json_keyfile_name(r'C:\Users\j.khamidullaev\Documents\myproject\credentials.json', SCOPE)
 
 
-
 def safe_convert_decimal(value):
     try:
         if not value or value.strip() in ['', '#REF!', '#N/A']:
@@ -27,7 +26,6 @@ def safe_convert_decimal(value):
         return Decimal(value.replace(',', '.'))
     except (InvalidOperation, AttributeError):
         return Decimal('0')
-
 
 def compress_image_to_500kb(image_bytes, max_size_kb=500):
     img = Image.open(BytesIO(image_bytes))
@@ -62,12 +60,15 @@ def safe_convert(value):
     except ValueError:
         return None
 
+def is_valid_name(name):
+    return bool(re.search(r'\(\d+\)$', name))
+
 def update_call_data():
 
     client = gspread.authorize(CREDENTIALS)
 
     spreadsheet = client.open('СВОД')
-    worksheet = spreadsheet.get_worksheet(1)
+    worksheet = spreadsheet.worksheet('WEB UCHUN')
 
     data = worksheet.get('A2:GT')
 
@@ -266,11 +267,13 @@ def update_call_data():
 
 
     for record in formatted_data:
+        if not is_valid_name(record['name']):
+            print(f"Пропущено: имя без номера — {record['name']}")
+            continue
 
         mark_value = safe_convert_decimal(record['mark'])
         if mark_value == 0:
             mark_value = None
-
         call_data, created = CallData.objects.update_or_create(
             name=record['name'],
             defaults={
@@ -487,8 +490,6 @@ def update_call_data():
             except Exception as e:
                 print(f"Ошибка {call_data.name}: {e}")
 
-
-
 def extract_code(name):
     """
     Извлекает код из скобок (например 'Ivanov Ivan (0119)' -> '0119')
@@ -533,6 +534,9 @@ def get_archive():
     for row in data:
         original_name = row[0].strip() if len(row) > 0 else None
         name = correct_name_from_calldata(original_name)
+        if not is_valid_name(name):
+            print(f"Пропущено: имя без номера — {name}")
+            continue
         mark = row[5].strip() if len(row) > 5 else None
         mark_decimal = safe_convert_decimal(mark)
         if mark_decimal == 0:
@@ -925,196 +929,5 @@ def get_archive():
 
     print("Импорт завершён.")
 
-def get_quarter_scores():
-
-
-    client = gspread.authorize(CREDENTIALS)
-
-
-    spreadsheet = client.open('ЛК сайт')
-    worksheet = spreadsheet.worksheet('ЛК 2')
-    data = worksheet.get('A3:GI')
-
-    for row in data:
-        original_name = row[0] if len(row) > 0 and isinstance(row[0], str) else None
-        if not original_name:
-            continue
-
-        name = correct_name_from_calldata(original_name)
-        if not name:
-            continue
-
-        group = row[2] if len(row) > 2 else ""
-
-        # (оставшиеся значения и все индексы без изменений)
-        quarter1 = row[3] if len(row) > 3 else None
-        quarter2 = row[4] if len(row) > 4 else None
-        quarter3 = row[5] if len(row) > 5 else None
-        quarter4 = row[6] if len(row) > 6 else None
-
-        greeting1 = row[7] if len(row) > 7 else None
-        greeting2 = row[8] if len(row) > 8 else None
-        greeting3 = row[9] if len(row) > 9 else None
-        greeting4 = row[10] if len(row) > 10 else None
-
-        hearing1 = row[19] if len(row) > 19 else None
-        hearing2 = row[20] if len(row) > 20 else None
-        hearing3 = row[21] if len(row) > 21 else None
-        hearing4 = row[22] if len(row) > 22 else None
-
-        question1 = row[31] if len(row) > 31 else None
-        question2 = row[32] if len(row) > 32 else None
-        question3 = row[33] if len(row) > 33 else None
-        question4 = row[34] if len(row) > 34 else None
-
-        interest1 = row[43] if len(row) > 43 else None
-        interest2 = row[44] if len(row) > 44 else None
-        interest3 = row[45] if len(row) > 45 else None
-        interest4 = row[46] if len(row) > 46 else None
-
-        cons1 = row[55] if len(row) > 55 else None
-        cons2 = row[56] if len(row) > 56 else None
-        cons3 = row[57] if len(row) > 57 else None
-        cons4 = row[58] if len(row) > 58 else None
-
-        polite1 = row[67] if len(row) > 67 else None
-        polite2 = row[68] if len(row) > 68 else None
-        polite3 = row[69] if len(row) > 69 else None
-        polite4 = row[70] if len(row) > 70 else None
-
-        speech1 = row[79] if len(row) > 79 else None
-        speech2 = row[80] if len(row) > 80 else None
-        speech3 = row[81] if len(row) > 81 else None
-        speech4 = row[82] if len(row) > 82 else None
-
-        note1 = row[91] if len(row) > 91 else None
-        note2 = row[92] if len(row) > 92 else None
-        note3 = row[93] if len(row) > 93 else None
-        note4 = row[94] if len(row) > 94 else None
-
-        warning1 = row[103] if len(row) > 103 else None
-        warning2 = row[104] if len(row) > 104 else None
-        warning3 = row[105] if len(row) > 105 else None
-        warning4 = row[106] if len(row) > 106 else None
-
-        emotion1 = row[115] if len(row) > 115 else None
-        emotion2 = row[116] if len(row) > 116 else None
-        emotion3 = row[117] if len(row) > 117 else None
-        emotion4 = row[118] if len(row) > 118 else None
-
-        solution1 = row[127] if len(row) > 127 else None
-        solution2 = row[128] if len(row) > 128 else None
-        solution3 = row[129] if len(row) > 129 else None
-        solution4 = row[130] if len(row) > 130 else None
-
-        bigmis1 = row[139] if len(row) > 139 else None
-        bigmis2 = row[140] if len(row) > 140 else None
-        bigmis3 = row[141] if len(row) > 141 else None
-        bigmis4 = row[142] if len(row) > 142 else None
-
-        mis1 = row[151] if len(row) > 151 else None
-        mis2 = row[152] if len(row) > 152 else None
-        mis3 = row[153] if len(row) > 153 else None
-        mis4 = row[154] if len(row) > 154 else None
-
-        smallmis1 = row[163] if len(row) > 163 else None
-        smallmis2 = row[164] if len(row) > 164 else None
-        smallmis3 = row[165] if len(row) > 165 else None
-        smallmis4 = row[166] if len(row) > 166 else None
-
-        operator = CallData.objects.filter(name=name).first()
-        if not operator:
-            print(f"Оператор с именем '{name}' не найден в CallData. Создаём нового оператора.")
-            operator = CallData.objects.create(name=name)
-
-        QuarterScores.objects.create(
-            name=name,
-            operator=operator,
-            group=group,
-
-            quarterscore1=safe_convert_decimal(quarter1),
-            quarterscore2=safe_convert_decimal(quarter2),
-            quarterscore3=safe_convert_decimal(quarter3),
-            quarterscore4=safe_convert_decimal(quarter4),
-
-            greeting1=safe_convert(greeting1),
-            greeting2=safe_convert(greeting2),
-            greeting3=safe_convert(greeting3),
-            greeting4=safe_convert(greeting4),
-
-            hearing1=safe_convert(hearing1),
-            hearing2=safe_convert(hearing2),
-            hearing3=safe_convert(hearing3),
-            hearing4=safe_convert(hearing4),
-
-            question1=safe_convert(question1),
-            question2=safe_convert(question2),
-            question3=safe_convert(question3),
-            question4=safe_convert(question4),
-
-            interest1=safe_convert(interest1),
-            interest2=safe_convert(interest2),
-            interest3=safe_convert(interest3),
-            interest4=safe_convert(interest4),
-
-            cons1=safe_convert(cons1),
-            cons2=safe_convert(cons2),
-            cons3=safe_convert(cons3),
-            cons4=safe_convert(cons4),
-
-            polite1=safe_convert(polite1),
-            polite2=safe_convert(polite2),
-            polite3=safe_convert(polite3),
-            polite4=safe_convert(polite4),
-
-            speech1=safe_convert(speech1),
-            speech2=safe_convert(speech2),
-            speech3=safe_convert(speech3),
-            speech4=safe_convert(speech4),
-
-            note1=safe_convert(note1),
-            note2=safe_convert(note2),
-            note3=safe_convert(note3),
-            note4=safe_convert(note4),
-
-            warning1=safe_convert(warning1),
-            warning2=safe_convert(warning2),
-            warning3=safe_convert(warning3),
-            warning4=safe_convert(warning4),
-
-            emotion1=safe_convert(emotion1),
-            emotion2=safe_convert(emotion2),
-            emotion3=safe_convert(emotion3),
-            emotion4=safe_convert(emotion4),
-
-            solution1=safe_convert(solution1),
-            solution2=safe_convert(solution2),
-            solution3=safe_convert(solution3),
-            solution4=safe_convert(solution4),
-
-            bigmis1=safe_convert(bigmis1),
-            bigmis2=safe_convert(bigmis2),
-            bigmis3=safe_convert(bigmis3),
-            bigmis4=safe_convert(bigmis4),
-
-            mis1=safe_convert(mis1),
-            mis2=safe_convert(mis2),
-            mis3=safe_convert(mis3),
-            mis4=safe_convert(mis4),
-
-            smallmis1=safe_convert(smallmis1),
-            smallmis2=safe_convert(smallmis2),
-            smallmis3=safe_convert(smallmis3),
-            smallmis4=safe_convert(smallmis4),
-        )
-
-
-# def update_scores_for_month():
-    # ScoresForMonth.objects.all().delete()
-    # CallData.objects.all().delete()
-    # QuarterScores.objects.all().delete()
-    # update_call_data()
-    # get_archive()
-    # get_quarter_scores()
 
 

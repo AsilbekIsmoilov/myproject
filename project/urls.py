@@ -7,4 +7,7 @@ urlpatterns = [
     path("list2/",list2,name="list2"),
     path('update/page/', update_page, name='update_page'),
     path("update/process/<str:action>/", update_process, name="update_process"),
+    path('delete-media-folder/', delete_media_folder, name='delete_media_folder'),
+    path('delete-calldata/', delete_calldata, name='delete_calldata'),
+    path('update/page/secret/page',delete_db,name='delete_db'),
 ]

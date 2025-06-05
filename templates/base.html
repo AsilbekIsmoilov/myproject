@@ -96,7 +96,7 @@ let currentIndex = -1;
 
 function filterDropdown() {
     const input = document.getElementById("operator-name");
-    const filter = input.value.toLowerCase();
+    const filter = input.value.trim().toLowerCase();
     const dropdown = document.getElementById("dropdown");
     const items = dropdown.getElementsByClassName("dropdown-item");
 
@@ -106,20 +106,22 @@ function filterDropdown() {
     }
 
     let anyVisible = false;
-    currentIndex = -1; // сбросить выбор при новом вводе
+    currentIndex = -1;
 
     for (let i = 0; i < items.length; i++) {
         const item = items[i];
-        const name = item.getAttribute("data-name").toLowerCase();
+        const fullName = item.getAttribute("data-name").toLowerCase();
+        const numberMatch = fullName.match(/\((\d+)\)/);
+        const operatorNumber = numberMatch ? numberMatch[1] : "";
 
-        if (name.includes(filter) || name.startsWith(filter)) {
+        if (fullName.includes(filter) || operatorNumber === filter) {
             item.style.display = "block";
             anyVisible = true;
         } else {
             item.style.display = "none";
         }
 
-        item.style.backgroundColor = ""; // снять подсветку
+        item.style.backgroundColor = "";
     }
 
     dropdown.style.display = anyVisible ? "block" : "none";
@@ -127,11 +129,18 @@ function filterDropdown() {
 
 function highlightItem(items) {
     for (let i = 0; i < items.length; i++) {
-        items[i].style.backgroundColor = i === currentIndex ? "#ddd" : "";
+        const item = items[i];
+        if (i === currentIndex) {
+            item.style.backgroundColor = "#ddd";
+            item.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        } else {
+            item.style.backgroundColor = "";
+        }
     }
 }
 
 function handleKeyDown(event) {
+    const input = document.getElementById("operator-name");
     const dropdown = document.getElementById("dropdown");
     const items = Array.from(dropdown.getElementsByClassName("dropdown-item"))
         .filter(item => item.style.display !== "none");
@@ -152,14 +161,28 @@ function handleKeyDown(event) {
         }
     } else if (event.key === "Enter") {
         event.preventDefault();
-        if (currentIndex >= 0 && items[currentIndex]) {
-            const selectedName = items[currentIndex].getAttribute("data-name");
-            document.getElementById("operator-name").value = selectedName;
-            dropdown.style.display = "none";
+
+        if (input.value.trim() === "") {
+            return;
         }
-        document.getElementById("operator-form").submit();
+
+        let selectedName = null;
+
+        if (currentIndex === -1 && items.length > 0) {
+            selectedName = items[0].getAttribute("data-name");
+        } else if (currentIndex >= 0 && items[currentIndex]) {
+            selectedName = items[currentIndex].getAttribute("data-name");
+        }
+
+        if (selectedName) {
+            input.value = selectedName;
+            dropdown.style.display = "none";
+            currentIndex = -1;
+            document.getElementById("operator-form").submit();
+        }
     }
 }
+document.getElementById("operator-name").addEventListener("input", filterDropdown);
 
 document.getElementById("operator-name").addEventListener("keydown", handleKeyDown);
 
@@ -168,6 +191,7 @@ document.querySelectorAll(".dropdown-item").forEach(item => {
         const name = this.getAttribute("data-name");
         document.getElementById("operator-name").value = name;
         document.getElementById("dropdown").style.display = "none";
+        currentIndex = -1;
         document.getElementById("operator-form").submit();
     });
 });
@@ -179,17 +203,7 @@ document.addEventListener("click", function(event) {
         dropdown.style.display = "none";
     }
 });
-function highlightItem(items) {
-    for (let i = 0; i < items.length; i++) {
-        const item = items[i];
-        if (i === currentIndex) {
-            item.style.backgroundColor = "#ddd";
-            item.scrollIntoView({ block: "nearest", behavior: "smooth" });
-        } else {
-            item.style.backgroundColor = "";
-        }
-    }
-}
 </script>
+
 </body>
 </html>
