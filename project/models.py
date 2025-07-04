@@ -196,6 +196,10 @@ class CallData(models.Model):
     month = models.IntegerField(null=True, blank=True)
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name = 'Текущий месяц ga '
+        verbose_name_plural = 'Текущий месяц'
 
 class ScoresForMonth(models.Model):
     operator = models.ForeignKey(CallData,on_delete=models.CASCADE,related_name='scores_for_month')
@@ -390,3 +394,55 @@ class ScoresForMonth(models.Model):
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name = 'Архив ga '
+        verbose_name_plural = 'Архив'
+
+
+class Schedule1000(models.Model):
+    title = models.CharField(max_length=255)
+    pdf_file = models.FileField(upload_to='documents')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'График 1000 ga '
+        verbose_name_plural = 'График 1000'
+
+class Schedule1009(models.Model):
+    title = models.CharField(max_length=255)
+    pdf_file = models.FileField(upload_to='documents')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'График 1009 ga '
+        verbose_name_plural = 'График 1009'
+
+class Schedule112(models.Model):
+    title = models.CharField(max_length=255)
+    pdf_file = models.FileField(upload_to='documents')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'График 112 ga '
+        verbose_name_plural = 'График 112'
+
+
+class Management(models.Model):
+    title = models.CharField(max_length=255)
+    pdf_file = models.FileField(upload_to='documents')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Начальство 255 ga '
+        verbose_name_plural = 'Начальство 255'
+
+
+class Management112(models.Model):
+    title = models.CharField(max_length=255)
+    pdf_file = models.FileField(upload_to='documents')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Начальство 229 ga '
+        verbose_name_plural = 'Начальство 229'

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CallData, ScoresForMonth
+from .models import *
 
 
 
@@ -19,7 +19,30 @@ class ScoresForMonthAdmin(admin.ModelAdmin):
         queryset = super().get_queryset(request)
         return queryset.order_by('name')
 
+class ManagementAdmin(admin.ModelAdmin):
+    list_display = ['title','pdf_file','created_at']
+
+
+class ManagementAdmin112(admin.ModelAdmin):
+    list_display = ['title','pdf_file','created_at']
+
+
+class Schedule1000Admin(admin.ModelAdmin):
+        list_display = ['title','pdf_file','created_at']
+
+class Schedule1009Admin(admin.ModelAdmin):
+        list_display = ['title','pdf_file','created_at']
+
+class Schedule112Admin(admin.ModelAdmin):
+        list_display = ['title','pdf_file','created_at']
+
 
 
 admin.site.register(CallData, CallDataAdmin)
 admin.site.register(ScoresForMonth,ScoresForMonthAdmin)
+
+admin.site.register(Schedule1000,Schedule1000Admin)
+admin.site.register(Schedule1009,Schedule1009Admin)
+admin.site.register(Schedule112,Schedule112Admin)
+admin.site.register(Management,ManagementAdmin)
+admin.site.register(Management112,ManagementAdmin112)

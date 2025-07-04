@@ -1,0 +1,32 @@
+{% load static %}
+<div class="sidebar">
+  <nav class="sidebar-nav">
+    <ul>
+        <li class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">
+        <a href="{% url 'index' %}?operator-name={{ request.session.selected_operator }}" class="sidebar-link">
+          <span class="sidebar-icon"><img src="{% static 'img/list.png' %}"></span>
+          <span class="sidebar-text">Лист контроль</span>
+        </a>
+      </li>
+      <li class="{% if request.resolver_match.url_name == 'list2' %}active{% endif %}">
+        <a href="{% url 'list2' %}?operator-name={{ request.session.selected_operator }}" class="sidebar-link">
+          <span class="sidebar-icon"><img src="{% static 'img/stats.png' %}"></span>
+          <span class="sidebar-text">Статистика</span>
+        </a>
+      </li>
+      <li class="{% if request.resolver_match.url_name == 'schedule' %}active{% endif %}">
+        <a href="{% url 'schedule' %}?operator-name={{ request.session.selected_operator }}" class="sidebar-link">
+          <span class="sidebar-icon"><img src="{% static 'img/grafik.png' %}"></span>
+          <span class="sidebar-text">График</span>
+        </a>
+      </li>
+      <li class="{% if request.resolver_match.url_name == 'management' %}active{% endif %}">
+        <a href="{% url 'management' %}?operator-name={{ request.session.selected_operator }}" class="sidebar-link">
+          <span class="sidebar-icon"><img src="{% static 'img/manage.png' %}"></span>
+          <span class="sidebar-text">Руководство</span>
+        </a>
+      </li>
+       
+    </ul>
+  </nav>
+</div>

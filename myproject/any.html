@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Animated Network Background</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #0a1f3c;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+
+    .animated-bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      padding: 50px;
+      color: white;
+      text-align: center;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+      filter: url(#blurFilter); /* blurni shu yerda qo‘llayapmiz */
+    }
+  </style>
+</head>
+<body>
+  <div class="animated-bg">
+    <svg id="network" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <filter id="blurFilter">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="0.8" />
+        </filter>
+      </defs>
+    </svg>
+  </div>
+
+  <script>
+    const svg = document.getElementById("network");
+
+    const width = 100;
+    const height = 100;
+    const points = [];
+
+    for (let i = 0; i < 30; i++) {
+      points.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        dx: (Math.random() - 0.5) * 0.2,
+        dy: (Math.random() - 0.5) * 0.2
+      });
+    }
+
+    function update() {
+      // remove old lines and circles
+      while (svg.lastChild && svg.lastChild.nodeName !== "defs") {
+        svg.removeChild(svg.lastChild);
+      }
+
+      // draw lines
+      for (let i = 0; i < points.length; i++) {
+        for (let j = i + 1; j < points.length; j++) {
+          const dx = points[i].x - points[j].x;
+          const dy = points[i].y - points[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 15) {
+            const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute("x1", points[i].x);
+            line.setAttribute("y1", points[i].y);
+            line.setAttribute("x2", points[j].x);
+            line.setAttribute("y2", points[j].y);
+            line.setAttribute("stroke", "white");
+            line.setAttribute("stroke-opacity", (1 - dist / 15).toFixed(2));
+            line.setAttribute("stroke-width", 0.3);
+            svg.appendChild(line);
+          }
+        }
+      }
+
+      points.forEach(p => {
+        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute("cx", p.x);
+        circle.setAttribute("cy", p.y);
+        circle.setAttribute("r", 0.5);
+        circle.setAttribute("fill", "#ffffff");
+        svg.appendChild(circle);
+
+        p.x += p.dx;
+        p.y += p.dy;
+
+        if (p.x < 0 || p.x > width) p.dx *= -1;
+        if (p.y < 0 || p.y > height) p.dy *= -1;
+      });
+
+      requestAnimationFrame(update);
+    }
+
+    update();
+  </script>
+</body>
+</html>

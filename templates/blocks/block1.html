@@ -85,75 +85,20 @@
             {% endif %}
         </div>
 
-        <div class="profile-photo">
-            {% if selected_operator.photo %}
-                <img src="{{ selected_operator.photo.url }}" alt="Operator Photo">
-            {% else %}
-                <img src="{% static 'img/profile.png' %}" alt="Default Avatar"
-                     style="width:160px;height:215px">
-            {% endif %}
-        </div>
+<div class="profile-photo">
+    {% if selected_operator.photo %}
+        <img src="{{ selected_operator.photo.url }}" alt="Operator Photo"
+             style="width:160px;height:215px;pointer-events: none;">
+    {% else %}
+        <img src="{% static 'img/profile.png' %}" alt="Default Avatar"
+             style="width:160px;height:215px;pointer-events: none;">
+    {% endif %}
+</div>
     </div>
     <div style="clear: both;"></div>
 </div>
-<div id="noteModal" class="modal" style="display: none;">
-  <div class="modal-content">
-    <span class="close" onclick="closeNotes()">&times;</span>
-    <h3>Оставьте комментарий</h3><br>
-
-    <h6>Ф.И.О оператора:</h6>
-    <textarea id="operatorName" rows="1" placeholder="Ф.И.О оператора"></textarea><br><br>
-
-    <h6>Код звонка:</h6>
-    <textarea id="callCode" rows="1" placeholder="Код звонка"></textarea><br><br>
-
-    <h6>Комментарий:</h6>
-    <textarea id="commentText" rows="10" placeholder="Введите текст ..."></textarea><br><br>
-
-    <button onclick="saveNote()">Отправить</button>
-  </div>
-</div>
-
 </form>
 
-<script>
-const backgrounds = [
-    "url('/static/img/ttt.jpg')",
-    "url('/static/img/background.jpg')",
-];
-
-let bgIndex = 0;
-let isCooldown = false;
-
-window.addEventListener('load', () => {
-    const savedBg = localStorage.getItem('backgroundImage');
-
-    // Если ранее сохранённого фона нет — установить дефолтный (первый из списка)
-    if (!savedBg) {
-        const defaultBg = backgrounds[0];
-        document.body.style.backgroundImage = defaultBg;
-        localStorage.setItem('backgroundImage', defaultBg);
-    } else {
-        document.body.style.backgroundImage = savedBg;
-    }
-
-    document.body.style.backgroundSize = "cover";
-    document.body.style.backgroundPosition = "center";
-});
-
-document.getElementById('logo-img').addEventListener('click', () => {
-    if (isCooldown) return;
-
-    const newBg = backgrounds[bgIndex];
-    document.body.style.backgroundImage = newBg;
-    document.body.style.backgroundSize = "cover";
-    document.body.style.backgroundPosition = "center";
-    document.body.style.transition = "background-image 0.5s ease-in-out";
-
-    localStorage.setItem('backgroundImage', newBg);
-    bgIndex = (bgIndex + 1) % backgrounds.length;
-});
-</script>
 
 
 

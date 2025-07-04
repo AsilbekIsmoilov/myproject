@@ -1,0 +1,41 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ title }}</title>
+
+  <link rel="stylesheet" href="{% static 'management.css' %}">
+  <link rel="stylesheet" href="{% static 'sidebar.css' %}">
+  <link rel="icon" type="image/png" href="{% static 'img/logoo.png' %}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+<body>
+<div class="fixed-header">
+  <div class="logo-container">
+    <img src="{% static 'img/logo.png' %}" id="logo-img" alt="Logo">
+    <div class="centered-buttons">
+        <button class="pdf-button" onclick="showPdf('{{ latest_doc.pdf_file.url }}', this)">Начальство 255</button>
+        <button class="pdf-button" onclick="showPdf('{{ latest_doc_112.pdf_file.url }}', this)">Начальство 229</button>
+    </div>
+  </div>
+  </div>
+
+  {% include 'project/sidebar.html' %}
+
+  <div id="pdf-container"></div>
+
+  <script>
+    {% if latest_doc %}
+      const DEFAULT_PDF_URL = "{{ latest_doc.pdf_file.url }}";
+    {% elif latest_doc_112 %}
+      const DEFAULT_PDF_URL = "{{ latest_doc_112.pdf_file.url }}";
+    {% else %}
+      const DEFAULT_PDF_URL = "";
+    {% endif %}
+  </script>
+
+  <script src="{% static 'management.js' %}"></script>
+</body>
+</html>

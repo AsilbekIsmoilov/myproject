@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ title }}</title>
+
+  <link rel="stylesheet" href="{% static 'pdf_page.css' %}">
+  <link rel="stylesheet" href="{% static 'sidebar.css' %}">
+  <link rel="icon" type="image/png" href="{% static 'img/logoo.png' %}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+<body>
+  <div style="text-align: end;">
+<div class="fixed-header">
+  <div class="logo-container">
+    <img src="{% static 'img/logo.png' %}" id="logo-img">
+    <div class="centered-buttons">
+      <button class="pdf-button" onclick="showPdf('1000', this)">График 1000</button>
+      <button class="pdf-button" onclick="showPdf('1009', this)">График 1009</button>
+      <button class="pdf-button" onclick="showPdf('112', this)">График 112</button>
+    </div>
+  </div>
+</div>
+
+    </div>
+    {% include 'project/sidebar.html' %}
+  </div>
+
+  <div id="pdf-container"></div>
+
+  <script>
+    const pdfFiles = {
+      '1000': {% if latest_1000 %}"{{ latest_1000.pdf_file.url }}"{% else %}null{% endif %},
+      '1009': {% if latest_1009 %}"{{ latest_1009.pdf_file.url }}"{% else %}null{% endif %},
+      '112': {% if latest_112 %}"{{ latest_112.pdf_file.url }}"{% else %}null{% endif %}
+    };
+  </script>
+
+  <script src="{% static 'pdf_file.js' %}"></script>
+</body>
+</html>

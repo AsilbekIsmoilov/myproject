@@ -10,4 +10,9 @@ urlpatterns = [
     path('delete-media-folder/', delete_media_folder, name='delete_media_folder'),
     path('delete-calldata/', delete_calldata, name='delete_calldata'),
     path('update/page/secret/page',delete_db,name='delete_db'),
+    path('schedule/',schedule,name="schedule"),
+    path('management/',management,name="management"),
+    path('adds/', adds_view, name='adds'),
+    path('login/', custom_login, name='login'),
+    path('logout/', custom_logout, name='logout'),
 ]

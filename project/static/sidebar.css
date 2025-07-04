@@ -1,0 +1,122 @@
+.sidebar {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  width: 50px;
+  min-width: 50px;
+  max-width: 50px;
+  height: auto;
+  background: transparent;
+  z-index: 1000;
+  transition: width 0.3s ease;
+  padding: 10px 0;
+  overflow: visible;
+}
+
+.sidebar:hover,
+.sidebar.expanded {
+  width: 180px;
+  min-width: 180px;
+  max-width: 180px;
+}
+
+.sidebar-nav {
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar-nav li {
+  margin-bottom: 10px;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 45px;
+  padding: 0 8px;
+  text-decoration: none;
+  color: #fff;
+  background: linear-gradient(135deg, rgba(0, 30, 60, 0.9), rgba(0, 50, 100, 0.8));
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-left: none;
+  border-radius: 0 15px 15px 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.sidebar:hover .sidebar-link,
+.sidebar.expanded .sidebar-link {
+  justify-content: flex-start;
+}
+
+.sidebar-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
+}
+
+.sidebar-icon img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.sidebar-text {
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-left: 0;
+  opacity: 0;
+  width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.sidebar:hover .sidebar-text,
+.sidebar.expanded .sidebar-text {
+  margin-left: 12px;
+  opacity: 1;
+  width: auto;
+  overflow: visible;
+}
+
+.sidebar-link:hover {
+  background: rgba(0, 40, 80, 0.95);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+  transform: scale(1.02);
+}
+
+.sidebar-link:hover .sidebar-icon {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6));
+}
+
+.sidebar-nav li.active .sidebar-link,
+.sidebar-link.active {
+  background: rgba(0, 60, 120, 0.95);
+  border-color: rgba(106, 255, 138, 0.8);
+  box-shadow: 0 0 15px rgba(106, 255, 138, 0.4);
+}
+
+.sidebar-nav li.active .sidebar-icon,
+.sidebar-link.active .sidebar-icon {
+  filter: drop-shadow(0 0 8px rgba(106, 255, 138, 0.8));
+}
+
+.sidebar-link:active {
+  transform: scale(0.97);
+}

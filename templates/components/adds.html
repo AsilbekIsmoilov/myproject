@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Добавление PDF</title>
+  <link rel="stylesheet" href="{% static 'pdf_page.css' %}">
+  <link rel="stylesheet" href="{% static 'adds.css' %}">
+  <style>
+    .container {
+      display: flex;
+      gap: 20px;
+    }
+    .half {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+
+<div style="text-align: start;">
+  <form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">Выйти</button>
+  </form>
+</div>
+
+<div class="container">
+
+  <!-- Левая часть: формы -->
+  <div class="half">
+    <h2>Добавить PDF в График 1000</h2>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ schedule1000_form.as_p }}
+      <button type="submit" name="add_schedule1000">Добавить</button>
+    </form>
+
+    <h2>Добавить PDF в График 1009</h2>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ schedule1009_form.as_p }}
+      <button type="submit" name="add_schedule1009">Добавить</button>
+    </form>
+
+    <h2>Добавить PDF в График 112</h2>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ schedule112_form.as_p }}
+      <button type="submit" name="add_schedule112">Добавить</button>
+    </form>
+
+    <h2>Добавить PDF в Начальство 255</h2>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ management_form.as_p }}
+      <button type="submit" name="add_management">Добавить</button>
+    </form>
+
+    <h2>Добавить PDF в Начальство 229</h2>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ management112_form.as_p }}
+      <button type="submit" name="add_management">Добавить</button>
+    </form>
+  </div>
+
+  <!-- Правая часть: списки -->
+  <div class="half">
+    <h2>Список PDF — График 1000</h2>
+    <ul>
+      {% for item in schedules1000 %}
+        <li><a href="{{ item.pdf_file.url }}" target="_blank">{{ item.title }}</a> — {{ item.created_at|date:"d.m.Y H:i" }}</li>
+      {% empty %}
+        <li>Нет PDF файлов.</li>
+      {% endfor %}
+    </ul>
+
+    <h2>Список PDF — График 1009</h2>
+    <ul>
+      {% for item in schedules1009 %}
+        <li><a href="{{ item.pdf_file.url }}" target="_blank">{{ item.title }}</a> — {{ item.created_at|date:"d.m.Y H:i" }}</li>
+      {% empty %}
+        <li>Нет PDF файлов.</li>
+      {% endfor %}
+    </ul>
+
+    <h2>Список PDF — График 112</h2>
+    <ul>
+      {% for item in schedules112 %}
+        <li><a href="{{ item.pdf_file.url }}" target="_blank">{{ item.title }}</a> — {{ item.created_at|date:"d.m.Y H:i" }}</li>
+      {% empty %}
+        <li>Нет PDF файлов.</li>
+      {% endfor %}
+    </ul>
+
+    <h2>Список PDF — Начальство 225</h2>
+    <ul>
+      {% for item in management_docs %}
+        <li><a href="{{ item.pdf_file.url }}" target="_blank">{{ item.title }}</a> — {{ item.created_at|date:"d.m.Y H:i" }}</li>
+      {% empty %}
+        <li>Нет PDF файлов.</li>
+      {% endfor %}
+    </ul>
+
+    <h2>Список PDF — Начальство 229</h2>
+    <ul>
+      {% for item in management112_docs %}
+        <li><a href="{{ item.pdf_file.url }}" target="_blank">{{ item.title }}</a> — {{ item.created_at|date:"d.m.Y H:i" }}</li>
+      {% empty %}
+        <li>Нет PDF файлов.</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+</div>
+
+</body>
+</html>

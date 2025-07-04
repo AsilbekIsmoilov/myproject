@@ -4,13 +4,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UZTELECOM — Панель контроля</title>
+  <title>Статистика</title>
   <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'sidebar.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/logoo.png' %}">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+{% include 'project/sidebar.html' %}
   <div class="dashboard">
-    <!-- Верхняя панель -->
     <header class="top-row">
         <a href="{% url 'index' %}?operator-name={{ operator.name }}">
             <div class="widget logo">
@@ -51,26 +53,6 @@
                     Нет данных
                     {% endif %}
                 </div>
-<!--          &lt;!&ndash; Поиск фамилии &ndash;&gt;-->
-<!--            <form method="get" id="operator-form">-->
-<!--                <div class="input-wrapper" style="position: relative;">-->
-<!--                    <input type="text" id="operator-name" name="operator-name"-->
-<!--                           placeholder="Поиск оператора"-->
-<!--                           oninput="filterDropdown()" autocomplete="off"-->
-<!--                           {% if operator %}-->
-<!--                           value="{{ operator.name }}"-->
-<!--                           {% endif %}>-->
-
-<!--                    <div id="dropdown">-->
-<!--                        {% for operator in operators %}-->
-<!--                        <div class="dropdown-item" data-name="{{ operator.name }}">-->
-<!--                            {{ operator.name }}-->
-<!--                        </div>-->
-<!--                        {% endfor %}-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </form>-->
-
           <!-- Группа — неинтерактивная -->
           {% if operator.group %}
           <div>{{operator.group}}</div>
@@ -93,14 +75,15 @@
 
         <div class="photo">
           {% if operator.photo %}
-          <img src="{{ operator.photo.url }}" alt="User Photo">
+          <img src="{{ operator.photo.url }}" alt="Operator Photo"
+             style="pointer-events: none;">
           {% else %}
-          <img src="{% static 'img/profile.png' %}" alt="Default Avatar">
+          <img src="{% static 'img/profile.png' %}" alt="Default Avatar"
+             style="pointer-events: none;">
           {% endif %}
         </div>
       </div>
     </header>
-
 
 
     <main class="main-area">
@@ -132,41 +115,6 @@
   </div>
 
 <script>
-const backgrounds = [
-    "url('/static/img/ttt.jpg')",
-    "url('/static/img/background.jpg')",
-];
-
-let bgIndex = 0;
-let isCooldown = false;
-
-window.addEventListener('load', () => {
-    const savedBg = localStorage.getItem('backgroundImage');
-
-    if (!savedBg) {
-        const defaultBg = backgrounds[0];
-        document.body.style.backgroundImage = defaultBg;
-        localStorage.setItem('backgroundImage', defaultBg);
-    } else {
-        document.body.style.backgroundImage = savedBg;
-    }
-
-    document.body.style.backgroundSize = "cover";
-    document.body.style.backgroundPosition = "center";
-});
-
-document.getElementById('logo-img').addEventListener('click', () => {
-    if (isCooldown) return;
-
-    const newBg = backgrounds[bgIndex];
-    document.body.style.backgroundImage = newBg;
-    document.body.style.backgroundSize = "cover";
-    document.body.style.backgroundPosition = "center";
-    document.body.style.transition = "background-image 0.5s ease-in-out";
-
-    localStorage.setItem('backgroundImage', newBg);
-    bgIndex = (bgIndex + 1) % backgrounds.length;
-});
     const ctx = document.getElementById('scoreChart').getContext('2d');
 const score = parseFloat("{{ chart_score|default:0 }}");
 
@@ -220,97 +168,71 @@ new Chart(ctx, {
 };
 
   function renderGrowthChart() {
-    const ctx = document.getElementById("growthChart").getContext("2d");
+  const ctx = document.getElementById("growthChart").getContext("2d");
 
-    // Вычисляем среднее значение
-    const sum = monthlyData.reduce((acc, val) => acc + val, 0);
-    const avg = monthlyData.length ? sum / monthlyData.length : 0;
-
-    new Chart(ctx, {
-      type: "line",
-      data: {
-        labels: monthLabels,
-        datasets: [
-          {
-            label: "Оценка",
-            data: monthlyData,
-            fill: true,
-            tension: 0.4,
-            borderColor: "#3b82f6",
-            backgroundColor: "rgba(59,130,246,0.15)",
-            pointBackgroundColor: "#fff",
-            pointBorderColor: "#3b82f6",
-            pointRadius: 5,
-            pointHoverRadius: 7,
-            pointStyle: "circle"
-          },
-          {
-            label: "Средняя линия",
-            data: Array(monthlyData.length).fill(avg),
-            borderDash: [5, 5],
-            borderColor: "#10b981",
-            pointRadius: 0,
-            borderWidth: 1,
-            fill: false
-          }
-        ]
+  new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: monthLabels,
+      datasets: [
+        {
+          label: "Оценка",
+          data: monthlyData,
+          fill: true,
+          tension: 0.4,
+          borderColor: "#3b82f6",
+          backgroundColor: "rgba(59,130,246,0.15)",
+          pointBackgroundColor: "#fff",
+          pointBorderColor: "#3b82f6",
+          pointRadius: 5,
+          pointHoverRadius: 7,
+          pointStyle: "circle"
+        },
+        {
+          label: "Средняя линия",
+          data: Array(monthlyData.length).fill(80), // фиксированное значение
+          borderDash: [5, 5],
+          borderColor: "#10b981",
+          pointRadius: 0,
+          borderWidth: 1,
+          fill: false
+        }
+      ]
+    },
+    options: {
+      plugins: {
+        legend: {
+          display: true,
+          labels: { color: "#ccc" }
+        },
+        tooltip: {
+          enabled: true,
+          backgroundColor: "rgba(0,0,0,0.7)",
+          titleColor: "#ff3b3b",
+          bodyColor: "#93c5fd",
+          padding: 10,
+          borderWidth: 1,
+          borderColor: "#3b82f6"
+        }
       },
-      options: {
-        plugins: {
-          legend: {
-            display: true,
-            labels: { color: "#ccc" }
-          },
-          tooltip: {
-            enabled: true,
-            backgroundColor: "rgba(0,0,0,0.7)",
-            titleColor: "#ff3b3b",
-            bodyColor: "#93c5fd",
-            padding: 10,
-            borderWidth: 1,
-            borderColor: "#3b82f6"
-          }
+      scales: {
+        y: {
+          min: 50,
+          max: 95,
+          ticks: { color: "#cbd5e1" },
+          grid: { color: "rgba(255,255,255,0.05)", drawTicks: false }
         },
-        scales: {
-          y: {
-            min: 50,
-            max: 95,
-            ticks: { color: "#cbd5e1" },
-            grid: { color: "rgba(255,255,255,0.05)", drawTicks: false }
-          },
-          x: {
-            ticks: { color: "#e2e8f0" },
-            grid: { display: false }
-          }
-        },
-        animation: {
-          onComplete: () => {
-            // Добавим стрелку вручную на конец линии
-            const chart = Chart.getChart("growthChart");
-            const ctx = chart.ctx;
-            const meta = chart.getDatasetMeta(0); // основная линия
-            const lastPoint = meta.data[meta.data.length - 1];
-            const prevPoint = meta.data[meta.data.length - 2];
-
-            if (lastPoint && prevPoint) {
-              ctx.save();
-              ctx.fillStyle = lastPoint.y < prevPoint.y ? "limegreen" : "red";
-              ctx.font = "bold 16px Arial";
-              ctx.textAlign = "center";
-              ctx.fillText(
-                lastPoint.y < prevPoint.y ? "⬆" : "⬇",
-                lastPoint.x,
-                lastPoint.y - 10
-              );
-              ctx.restore();
-            }
-          }
+        x: {
+          ticks: { color: "#e2e8f0" },
+          grid: { display: false }
         }
       }
-    });
-  }
+    }
+  });
+}
 
-  document.addEventListener('DOMContentLoaded', renderGrowthChart);
+document.addEventListener('DOMContentLoaded', renderGrowthChart);
+
 
   // === Соотношение критериев ===
 document.addEventListener('DOMContentLoaded', function () {

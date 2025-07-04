@@ -3,8 +3,10 @@
 <!DOCTYPE html>
 <html lang="uz">
 {% include 'components/head.html' %}
+  <link rel="stylesheet" href="{% static 'sidebar.css' %}">
 <body>
 <div class="container fixed-wrapper">
+    {% include 'project/sidebar.html' %}
     <div class="wrapper">
         <div class="main-container">
             <div class="left-column">
@@ -24,16 +26,6 @@
             <div style="clear: both;"></div>
         </div>
     </div>
-<!--    <div id="complaint-banner" class="complaint-banner">-->
-<!--  <p>-->
-<!--      <strong>Если у вас есть возражения по поводу оценки, выставленной мониторинговой группой, вы можете оставить своё-->
-<!--          возражение в письменной форме или обратиться в мониторинговую группу с понедельника по пятницу с 09:00 до-->
-<!--          18:00.</strong>-->
-<!--  </p>-->
-<!--  <div class="complaint-buttons">-->
-<!--    <button onclick="openComplaintForm()">📝 Отправить</button>-->
-<!--  </div>-->
-<!--</div>-->
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>

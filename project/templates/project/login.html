@@ -1,0 +1,33 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Вход</title>
+  <link rel="stylesheet" href="{% static 'login.css' %}">
+</head>
+<body>
+
+  <div class="login-container">
+
+    <form method="post" class="login-form">
+      {% csrf_token %}
+      <h2>Вход</h2>
+
+      {% if messages %}
+        <div class="error">
+          {% for message in messages %}
+            {{ message }}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <input type="text" name="username" placeholder="Логин" required>
+      <input type="password" name="password" placeholder="Пароль" required>
+      <button type="submit">Войти</button>
+    </form>
+  </div>
+
+</body>
+</html>

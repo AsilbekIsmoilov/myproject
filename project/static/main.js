@@ -646,7 +646,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const mises = JSON.parse('{{ quarter_mises|escapejs }}');
 
-  // Подсчёт ошибок по типу
   const counts = { severe: 0, major: 0, minor: 0 };
 
   mises.forEach(m => {
@@ -655,7 +654,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  // Обновляем содержимое .count блоков
   const legendItems = document.querySelectorAll(".legend-item");
 
   legendItems.forEach(item => {

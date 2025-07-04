@@ -14,5 +14,15 @@
 <form method="get" action="{% url 'delete_calldata' %}" target="_blank">
   <button type="submit">Удалить базу CallData</button>
 </form>
+  <br><br>
+
+      <div style="text-align: start;">
+  <form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">
+      Выйти
+    </button>
+  </form>
+</div>
 </body>
 </html>
