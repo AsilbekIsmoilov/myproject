@@ -446,3 +446,11 @@ class Management112(models.Model):
     class Meta:
         verbose_name = 'Начальство 229 ga '
         verbose_name_plural = 'Начальство 229'
+
+
+class BackgroundImage(models.Model):
+    image = models.ImageField(upload_to='backgrounds/')
+    order = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"Background #{self.pk}"

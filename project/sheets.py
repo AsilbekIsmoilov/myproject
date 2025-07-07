@@ -16,7 +16,7 @@ from django.core.files.base import ContentFile
 import re
 
 SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-CREDENTIALS = ServiceAccountCredentials.from_json_keyfile_name(r'C:\Users\j.khamidullaev\Documents\myproject\credentials.json', SCOPE)
+CREDENTIALS = ServiceAccountCredentials.from_json_keyfile_name(r'C:\Users\j.khamidullaev\Documents\to github\myproject\credentials.json', SCOPE)
 
 
 def safe_convert_decimal(value):
@@ -519,14 +519,13 @@ def correct_name_from_calldata(name_from_sheet):
         return name_from_sheet
 
 def get_archive():
-
-    print("🧹 Удаляем все записи из базы ScoresForMonth...")
-    ScoresForMonth.objects.all().delete()
-    print("✅ Удаление завершено. Переходим к импорту.\n")
-
+    print("Проверка существующих месяцев в БД...")
+    existing_months = set(
+        ScoresForMonth.objects.values_list('month', flat=True).distinct()
+    )
+    print(f"Уже загружены месяцы: {sorted(existing_months)}")
 
     client = gspread.authorize(CREDENTIALS)
-
     spreadsheet = client.open('ЛК сайт')
     worksheet = spreadsheet.worksheet('Архив')
     data = worksheet.get('A2:GT')
@@ -535,201 +534,27 @@ def get_archive():
         original_name = row[0].strip() if len(row) > 0 else None
         name = correct_name_from_calldata(original_name)
         if not is_valid_name(name):
-            print(f"Пропущено: имя без номера — {name}")
+            print(f"ФИО без номера — {name}")
             continue
+
+        month = row[201].strip() if len(row) > 201 else None
+        if not month:
+            print(f"Пропущено: отсутствует месяц для {name}")
+            continue
+
+        if month in existing_months:
+            print(f"Пропущено: данные за месяц {month} уже есть в базе.")
+            continue
+
         mark = row[5].strip() if len(row) > 5 else None
         mark_decimal = safe_convert_decimal(mark)
         if mark_decimal == 0:
             mark_decimal = None
+
         bl = row[2] if len(row) > 2 else ""
         group = row[3] if len(row) > 3 else ""
-        code1 = row[6] if len(row) > 6 else ""
-        code2 = row[7] if len(row) > 7 else ""
-        code3 = row[8] if len(row) > 8 else ""
-        code4 = row[9] if len(row) > 9 else ""
-        code5 = row[10] if len(row) > 10 else ""
-        code6 = row[11] if len(row) > 11 else ""
-        code7 = row[12] if len(row) > 12 else ""
-        code8 = row[13] if len(row) > 13 else ""
-        code9 = row[14] if len(row) > 14 else ""
-        code10 = row[15] if len(row) > 15 else ""
-
-        call1 = row[16] if len(row) > 16 else ""
-        call2 = row[17] if len(row) > 17 else ""
-        call3 = row[18] if len(row) > 18 else ""
-        call4 = row[19] if len(row) > 19 else ""
-        call5 = row[20] if len(row) > 20 else ""
-        call6 = row[21] if len(row) > 21 else ""
-        call7 = row[22] if len(row) > 22 else ""
-        call8 = row[23] if len(row) > 23 else ""
-        call9 = row[24] if len(row) > 24 else ""
-        call10 = row[25] if len(row) > 25 else ""
-
-        service1 = row[26] if len(row) > 26 else ""
-        service2 = row[27] if len(row) > 27 else ""
-        service3 = row[28] if len(row) > 28 else ""
-        service4 = row[29] if len(row) > 29 else ""
-        service5 = row[30] if len(row) > 30 else ""
-        service6 = row[31] if len(row) > 31 else ""
-        service7 = row[32] if len(row) > 32 else ""
-        service8 = row[33] if len(row) > 33 else ""
-        service9 = row[34] if len(row) > 34 else ""
-        service10 = row[35] if len(row) > 35 else ""
-
-        greeting1 = (row[36]) if len(row) > 36 else None
-        greeting2 = (row[37]) if len(row) > 37 else None
-        greeting3 = (row[38]) if len(row) > 38 else None
-        greeting4 = (row[39]) if len(row) > 39 else None
-        greeting5 = (row[40]) if len(row) > 40 else None
-        greeting6 = (row[41]) if len(row) > 41 else None
-        greeting7 = (row[42]) if len(row) > 42 else None
-        greeting8 = (row[43]) if len(row) > 43 else None
-        greeting9 = (row[44]) if len(row) > 44 else None
-        greeting10 = (row[45]) if len(row) > 45 else None
-
-        hearing1 = (row[46]) if len(row) > 46 else None
-        hearing2 = (row[47]) if len(row) > 47 else None
-        hearing3 = (row[48]) if len(row) > 48 else None
-        hearing4 = (row[49]) if len(row) > 49 else None
-        hearing5 = (row[50]) if len(row) > 50 else None
-        hearing6 = (row[51]) if len(row) > 51 else None
-        hearing7 = (row[52]) if len(row) > 52 else None
-        hearing8 = (row[53]) if len(row) > 53 else None
-        hearing9 = (row[54]) if len(row) > 54 else None
-        hearing10 = (row[55]) if len(row) > 55 else None
-
-        question1 = (row[56]) if len(row) > 56 else None
-        question2 = (row[57]) if len(row) > 57 else None
-        question3 = (row[58]) if len(row) > 58 else None
-        question4 = (row[59]) if len(row) > 59 else None
-        question5 = (row[60]) if len(row) > 60 else None
-        question6 = (row[61]) if len(row) > 61 else None
-        question7 = (row[62]) if len(row) > 62 else None
-        question8 = (row[63]) if len(row) > 63 else None
-        question9 = (row[64]) if len(row) > 64 else None
-        question10 = (row[65]) if len(row) > 65 else None
-
-        interest1 = (row[66]) if len(row) > 66 else None
-        interest2 = (row[67]) if len(row) > 67 else None
-        interest3 = (row[68]) if len(row) > 68 else None
-        interest4 = (row[69]) if len(row) > 69 else None
-        interest5 = (row[70]) if len(row) > 70 else None
-        interest6 = (row[71]) if len(row) > 71 else None
-        interest7 = (row[72]) if len(row) > 72 else None
-        interest8 = (row[73]) if len(row) > 73 else None
-        interest9 = (row[74]) if len(row) > 74 else None
-        interest10 = (row[75]) if len(row) > 75 else None
-
-        cons1 = (row[76]) if len(row) > 76 else None
-        cons2 = (row[77]) if len(row) > 77 else None
-        cons3 = (row[78]) if len(row) > 78 else None
-        cons4 = (row[79]) if len(row) > 79 else None
-        cons5 = (row[80]) if len(row) > 80 else None
-        cons6 = (row[81]) if len(row) > 81 else None
-        cons7 = (row[82]) if len(row) > 82 else None
-        cons8 = (row[83]) if len(row) > 83 else None
-        cons9 = (row[84]) if len(row) > 84 else None
-        cons10 = (row[85]) if len(row) > 85 else None
-
-        polite1 = (row[86]) if len(row) > 86 else None
-        polite2 = (row[87]) if len(row) > 87 else None
-        polite3 = (row[88]) if len(row) > 88 else None
-        polite4 = (row[89]) if len(row) > 89 else None
-        polite5 = (row[90]) if len(row) > 90 else None
-        polite6 = (row[91]) if len(row) > 91 else None
-        polite7 = (row[92]) if len(row) > 92 else None
-        polite8 = (row[93]) if len(row) > 93 else None
-        polite9 = (row[94]) if len(row) > 94 else None
-        polite10 = (row[95]) if len(row) > 95 else None
-
-        speech1 = (row[96]) if len(row) > 96 else None
-        speech2 = (row[97]) if len(row) > 97 else None
-        speech3 = (row[98]) if len(row) > 98 else None
-        speech4 = (row[99]) if len(row) > 99 else None
-        speech5 = (row[100]) if len(row) > 100 else None
-        speech6 = (row[101]) if len(row) > 101 else None
-        speech7 = (row[102]) if len(row) > 102 else None
-        speech8 = (row[103]) if len(row) > 103 else None
-        speech9 = (row[104]) if len(row) > 104 else None
-        speech10 = (row[105]) if len(row) > 105 else None
-
-        note1 = (row[106]) if len(row) > 106 else None
-        note2 = (row[107]) if len(row) > 107 else None
-        note3 = (row[108]) if len(row) > 108 else None
-        note4 = (row[109]) if len(row) > 109 else None
-        note5 = (row[110]) if len(row) > 110 else None
-        note6 = (row[111]) if len(row) > 111 else None
-        note7 = (row[112]) if len(row) > 112 else None
-        note8 = (row[113]) if len(row) > 113 else None
-        note9 = (row[114]) if len(row) > 114 else None
-        note10 = (row[115]) if len(row) > 115 else None
-
-        warning1 = (row[116]) if len(row) > 116 else None
-        warning2 = (row[117]) if len(row) > 117 else None
-        warning3 = (row[118]) if len(row) > 118 else None
-        warning4 = (row[119]) if len(row) > 119 else None
-        warning5 = (row[120]) if len(row) > 120 else None
-        warning6 = (row[121]) if len(row) > 121 else None
-        warning7 = (row[122]) if len(row) > 122 else None
-        warning8 = (row[123]) if len(row) > 123 else None
-        warning9 = (row[124]) if len(row) > 124 else None
-        warning10 = (row[125]) if len(row) > 125 else None
-
-        emotion1 = (row[126]) if len(row) > 126 else None
-        emotion2 = (row[127]) if len(row) > 127 else None
-        emotion3 = (row[128]) if len(row) > 128 else None
-        emotion4 = (row[129]) if len(row) > 129 else None
-        emotion5 = (row[130]) if len(row) > 130 else None
-        emotion6 = (row[131]) if len(row) > 131 else None
-        emotion7 = (row[132]) if len(row) > 132 else None
-        emotion8 = (row[133]) if len(row) > 133 else None
-        emotion9 = (row[134]) if len(row) > 134 else None
-        emotion10 = (row[135]) if len(row) > 135 else None
-
-        solution1 = (row[136]) if len(row) > 136 else None
-        solution2 = (row[137]) if len(row) > 137 else None
-        solution3 = (row[138]) if len(row) > 138 else None
-        solution4 = (row[139]) if len(row) > 139 else None
-        solution5 = (row[140]) if len(row) > 140 else None
-        solution6 = (row[141]) if len(row) > 141 else None
-        solution7 = (row[142]) if len(row) > 142 else None
-        solution8 = (row[143]) if len(row) > 143 else None
-        solution9 = (row[144]) if len(row) > 144 else None
-        solution10 = (row[145]) if len(row) > 145 else None
-
-        dialog1 = row[146] if len(row) > 146 else None
-        dialog2 = row[147] if len(row) > 147 else None
-        dialog3 = row[148] if len(row) > 148 else None
-        dialog4 = row[149] if len(row) > 149 else None
-        dialog5 = row[150] if len(row) > 150 else None
-        dialog6 = row[151] if len(row) > 151 else None
-        dialog7 = row[152] if len(row) > 152 else None
-        dialog8 = row[153] if len(row) > 153 else None
-        dialog9 = row[154] if len(row) > 154 else None
-        dialog10 = row[155] if len(row) > 155 else None
-
-        comment1 = row[187] if len(row) > 187 else ""
-        comment2 = row[188] if len(row) > 188 else ""
-        comment3 = row[189] if len(row) > 189 else ""
-        comment4 = row[190] if len(row) > 190 else ""
-        comment5 = row[191] if len(row) > 191 else ""
-        comment6 = row[192] if len(row) > 192 else ""
-        comment7 = row[193] if len(row) > 193 else ""
-        comment8 = row[194] if len(row) > 194 else ""
-        comment9 = row[195] if len(row) > 195 else ""
-        comment10 = row[196] if len(row) > 196 else ""
-
-        mis1 = (row[197]) if len(row) > 197 else None
-        mis2 = (row[198]) if len(row) > 198 else None
-        mis3 = (row[199]) if len(row) > 199 else None
-
-        month = row[201].strip() if len(row) > 201 else None
-
-        if not name:
-            continue
 
         operator = CallData.objects.filter(name=name).first()
-
         if not operator:
             print(f"Оператор с именем '{name}' не найден в CallData. Создаём нового оператора.")
             operator = CallData.objects.create(name=name)
@@ -741,193 +566,174 @@ def get_archive():
             group=group,
             bl=bl,
             month=month,
-            code1=code1,
-            code2=code2,
-            code3=code3,
-            code4=code4,
-            code5=code5,
-            code6=code6,
-            code7=code7,
-            code8=code8,
-            code9=code9,
-            code10=code10,
-
-            call1=call1,
-            call2=call2,
-            call3=call3,
-            call4=call4,
-            call5=call5,
-            call6=call6,
-            call7=call7,
-            call8=call8,
-            call9=call9,
-            call10=call10,
-
-            service1=service1,
-            service2=service2,
-            service3=service3,
-            service4=service4,
-            service5=service5,
-            service6=service6,
-            service7=service7,
-            service8=service8,
-            service9=service9,
-            service10=service10,
-
-            greeting1=safe_convert(greeting1),
-            greeting2=safe_convert(greeting2),
-            greeting3=safe_convert(greeting3),
-            greeting4=safe_convert(greeting4),
-            greeting5=safe_convert(greeting5),
-            greeting6=safe_convert(greeting6),
-            greeting7=safe_convert(greeting7),
-            greeting8=safe_convert(greeting8),
-            greeting9=safe_convert(greeting9),
-            greeting10=safe_convert(greeting10),
-
-            hearing1=safe_convert(hearing1),
-            hearing2=safe_convert(hearing2),
-            hearing3=safe_convert(hearing3),
-            hearing4=safe_convert(hearing4),
-            hearing5=safe_convert(hearing5),
-            hearing6=safe_convert(hearing6),
-            hearing7=safe_convert(hearing7),
-            hearing8=safe_convert(hearing8),
-            hearing9=safe_convert(hearing9),
-            hearing10=safe_convert(hearing10),
-
-            question1=safe_convert(question1),
-            question2=safe_convert(question2),
-            question3=safe_convert(question3),
-            question4=safe_convert(question4),
-            question5=safe_convert(question5),
-            question6=safe_convert(question6),
-            question7=safe_convert(question7),
-            question8=safe_convert(question8),
-            question9=safe_convert(question9),
-            question10=safe_convert(question10),
-
-            interest1=safe_convert(interest1),
-            interest2=safe_convert(interest2),
-            interest3=safe_convert(interest3),
-            interest4=safe_convert(interest4),
-            interest5=safe_convert(interest5),
-            interest6=safe_convert(interest6),
-            interest7=safe_convert(interest7),
-            interest8=safe_convert(interest8),
-            interest9=safe_convert(interest9),
-            interest10=safe_convert(interest10),
-
-            cons1=safe_convert(cons1),
-            cons2=safe_convert(cons2),
-            cons3=safe_convert(cons3),
-            cons4=safe_convert(cons4),
-            cons5=safe_convert(cons5),
-            cons6=safe_convert(cons6),
-            cons7=safe_convert(cons7),
-            cons8=safe_convert(cons8),
-            cons9=safe_convert(cons9),
-            cons10=safe_convert(cons10),
-
-
-            polite1=safe_convert(polite1),
-            polite2=safe_convert(polite2),
-            polite3=safe_convert(polite3),
-            polite4=safe_convert(polite4),
-            polite5=safe_convert(polite5),
-            polite6=safe_convert(polite6),
-            polite7=safe_convert(polite7),
-            polite8=safe_convert(polite8),
-            polite9=safe_convert(polite9),
-            polite10=safe_convert(polite10),
-
-
-            speech1=safe_convert(speech1),
-            speech2=safe_convert(speech2),
-            speech3=safe_convert(speech3),
-            speech4=safe_convert(speech4),
-            speech5=safe_convert(speech5),
-            speech6=safe_convert(speech6),
-            speech7=safe_convert(speech7),
-            speech8=safe_convert(speech8),
-            speech9=safe_convert(speech9),
-            speech10=safe_convert(speech10),
-
-            note1=safe_convert(note1),
-            note2=safe_convert(note2),
-            note3=safe_convert(note3),
-            note4=safe_convert(note4),
-            note5=safe_convert(note5),
-            note6=safe_convert(note6),
-            note7=safe_convert(note7),
-            note8=safe_convert(note8),
-            note9=safe_convert(note9),
-            note10=safe_convert(note10),
-
-            warning1=safe_convert(warning1),
-            warning2=safe_convert(warning2),
-            warning3=safe_convert(warning3),
-            warning4=safe_convert(warning4),
-            warning5=safe_convert(warning5),
-            warning6=safe_convert(warning6),
-            warning7=safe_convert(warning7),
-            warning8=safe_convert(warning8),
-            warning9=safe_convert(warning9),
-            warning10=safe_convert(warning10),
-
-            emotion1=safe_convert(emotion1),
-            emotion2=safe_convert(emotion2),
-            emotion3=safe_convert(emotion3),
-            emotion4=safe_convert(emotion4),
-            emotion5=safe_convert(emotion5),
-            emotion6=safe_convert(emotion6),
-            emotion7=safe_convert(emotion7),
-            emotion8=safe_convert(emotion8),
-            emotion9=safe_convert(emotion9),
-            emotion10=safe_convert(emotion10),
-
-            solution1=safe_convert(solution1),
-            solution2=safe_convert(solution2),
-            solution3=safe_convert(solution3),
-            solution4=safe_convert(solution4),
-            solution5=safe_convert(solution5),
-            solution6=safe_convert(solution6),
-            solution7=safe_convert(solution7),
-            solution8=safe_convert(solution8),
-            solution9=safe_convert(solution9),
-            solution10=safe_convert(solution10),
-
-            dialog1=safe_convert_decimal(dialog1),
-            dialog2=safe_convert_decimal(dialog2),
-            dialog3=safe_convert_decimal(dialog3),
-            dialog4=safe_convert_decimal(dialog4),
-            dialog5=safe_convert_decimal(dialog5),
-            dialog6=safe_convert_decimal(dialog6),
-            dialog7=safe_convert_decimal(dialog7),
-            dialog8=safe_convert_decimal(dialog8),
-            dialog9=safe_convert_decimal(dialog9),
-            dialog10=safe_convert_decimal(dialog10),
-
-
-            comment1=comment1,
-            comment2=comment2,
-            comment3=comment3,
-            comment4=comment4,
-            comment5=comment5,
-            comment6=comment6,
-            comment7=comment7,
-            comment8=comment8,
-            comment9=comment9,
-            comment10=comment10,
-
-            mis1=safe_convert(mis1),
-            mis2=safe_convert(mis2),
-            mis3=safe_convert(mis3),
-
+            code1=row[6] if len(row) > 6 else "",
+            code2=row[7] if len(row) > 7 else "",
+            code3=row[8] if len(row) > 8 else "",
+            code4=row[9] if len(row) > 9 else "",
+            code5=row[10] if len(row) > 10 else "",
+            code6=row[11] if len(row) > 11 else "",
+            code7=row[12] if len(row) > 12 else "",
+            code8=row[13] if len(row) > 13 else "",
+            code9=row[14] if len(row) > 14 else "",
+            code10=row[15] if len(row) > 15 else "",
+            call1=row[16] if len(row) > 16 else "",
+            call2=row[17] if len(row) > 17 else "",
+            call3=row[18] if len(row) > 18 else "",
+            call4=row[19] if len(row) > 19 else "",
+            call5=row[20] if len(row) > 20 else "",
+            call6=row[21] if len(row) > 21 else "",
+            call7=row[22] if len(row) > 22 else "",
+            call8=row[23] if len(row) > 23 else "",
+            call9=row[24] if len(row) > 24 else "",
+            call10=row[25] if len(row) > 25 else "",
+            service1=row[26] if len(row) > 26 else "",
+            service2=row[27] if len(row) > 27 else "",
+            service3=row[28] if len(row) > 28 else "",
+            service4=row[29] if len(row) > 29 else "",
+            service5=row[30] if len(row) > 30 else "",
+            service6=row[31] if len(row) > 31 else "",
+            service7=row[32] if len(row) > 32 else "",
+            service8=row[33] if len(row) > 33 else "",
+            service9=row[34] if len(row) > 34 else "",
+            service10=row[35] if len(row) > 35 else "",
+            greeting1=safe_convert(row[36]) if len(row) > 36 else None,
+            greeting2=safe_convert(row[37]) if len(row) > 37 else None,
+            greeting3=safe_convert(row[38]) if len(row) > 38 else None,
+            greeting4=safe_convert(row[39]) if len(row) > 39 else None,
+            greeting5=safe_convert(row[40]) if len(row) > 40 else None,
+            greeting6=safe_convert(row[41]) if len(row) > 41 else None,
+            greeting7=safe_convert(row[42]) if len(row) > 42 else None,
+            greeting8=safe_convert(row[43]) if len(row) > 43 else None,
+            greeting9=safe_convert(row[44]) if len(row) > 44 else None,
+            greeting10=safe_convert(row[45]) if len(row) > 45 else None,
+            hearing1=safe_convert(row[46]) if len(row) > 46 else None,
+            hearing2=safe_convert(row[47]) if len(row) > 47 else None,
+            hearing3=safe_convert(row[48]) if len(row) > 48 else None,
+            hearing4=safe_convert(row[49]) if len(row) > 49 else None,
+            hearing5=safe_convert(row[50]) if len(row) > 50 else None,
+            hearing6=safe_convert(row[51]) if len(row) > 51 else None,
+            hearing7=safe_convert(row[52]) if len(row) > 52 else None,
+            hearing8=safe_convert(row[53]) if len(row) > 53 else None,
+            hearing9=safe_convert(row[54]) if len(row) > 54 else None,
+            hearing10=safe_convert(row[55]) if len(row) > 55 else None,
+            question1=safe_convert(row[56]) if len(row) > 56 else None,
+            question2=safe_convert(row[57]) if len(row) > 57 else None,
+            question3=safe_convert(row[58]) if len(row) > 58 else None,
+            question4=safe_convert(row[59]) if len(row) > 59 else None,
+            question5=safe_convert(row[60]) if len(row) > 60 else None,
+            question6=safe_convert(row[61]) if len(row) > 61 else None,
+            question7=safe_convert(row[62]) if len(row) > 62 else None,
+            question8=safe_convert(row[63]) if len(row) > 63 else None,
+            question9=safe_convert(row[64]) if len(row) > 64 else None,
+            question10=safe_convert(row[65]) if len(row) > 65 else None,
+            interest1=safe_convert(row[66]) if len(row) > 66 else None,
+            interest2=safe_convert(row[67]) if len(row) > 67 else None,
+            interest3=safe_convert(row[68]) if len(row) > 68 else None,
+            interest4=safe_convert(row[69]) if len(row) > 69 else None,
+            interest5=safe_convert(row[70]) if len(row) > 70 else None,
+            interest6=safe_convert(row[71]) if len(row) > 71 else None,
+            interest7=safe_convert(row[72]) if len(row) > 72 else None,
+            interest8=safe_convert(row[73]) if len(row) > 73 else None,
+            interest9=safe_convert(row[74]) if len(row) > 74 else None,
+            interest10=safe_convert(row[75]) if len(row) > 75 else None,
+            cons1=safe_convert(row[76]) if len(row) > 76 else None,
+            cons2=safe_convert(row[77]) if len(row) > 77 else None,
+            cons3=safe_convert(row[78]) if len(row) > 78 else None,
+            cons4=safe_convert(row[79]) if len(row) > 79 else None,
+            cons5=safe_convert(row[80]) if len(row) > 80 else None,
+            cons6=safe_convert(row[81]) if len(row) > 81 else None,
+            cons7=safe_convert(row[82]) if len(row) > 82 else None,
+            cons8=safe_convert(row[83]) if len(row) > 83 else None,
+            cons9=safe_convert(row[84]) if len(row) > 84 else None,
+            cons10=safe_convert(row[85]) if len(row) > 85 else None,
+            polite1=safe_convert(row[86]) if len(row) > 86 else None,
+            polite2=safe_convert(row[87]) if len(row) > 87 else None,
+            polite3=safe_convert(row[88]) if len(row) > 88 else None,
+            polite4=safe_convert(row[89]) if len(row) > 89 else None,
+            polite5=safe_convert(row[90]) if len(row) > 90 else None,
+            polite6=safe_convert(row[91]) if len(row) > 91 else None,
+            polite7=safe_convert(row[92]) if len(row) > 92 else None,
+            polite8=safe_convert(row[93]) if len(row) > 93 else None,
+            polite9=safe_convert(row[94]) if len(row) > 94 else None,
+            polite10=safe_convert(row[95]) if len(row) > 95 else None,
+            speech1=safe_convert(row[96]) if len(row) > 96 else None,
+            speech2=safe_convert(row[97]) if len(row) > 97 else None,
+            speech3=safe_convert(row[98]) if len(row) > 98 else None,
+            speech4=safe_convert(row[99]) if len(row) > 99 else None,
+            speech5=safe_convert(row[100]) if len(row) > 100 else None,
+            speech6=safe_convert(row[101]) if len(row) > 101 else None,
+            speech7=safe_convert(row[102]) if len(row) > 102 else None,
+            speech8=safe_convert(row[103]) if len(row) > 103 else None,
+            speech9=safe_convert(row[104]) if len(row) > 104 else None,
+            speech10=safe_convert(row[105]) if len(row) > 105 else None,
+            note1=safe_convert(row[106]) if len(row) > 106 else None,
+            note2=safe_convert(row[107]) if len(row) > 107 else None,
+            note3=safe_convert(row[108]) if len(row) > 108 else None,
+            note4=safe_convert(row[109]) if len(row) > 109 else None,
+            note5=safe_convert(row[110]) if len(row) > 110 else None,
+            note6=safe_convert(row[111]) if len(row) > 111 else None,
+            note7=safe_convert(row[112]) if len(row) > 112 else None,
+            note8=safe_convert(row[113]) if len(row) > 113 else None,
+            note9=safe_convert(row[114]) if len(row) > 114 else None,
+            note10=safe_convert(row[115]) if len(row) > 115 else None,
+            warning1=safe_convert(row[116]) if len(row) > 116 else None,
+            warning2=safe_convert(row[117]) if len(row) > 117 else None,
+            warning3=safe_convert(row[118]) if len(row) > 118 else None,
+            warning4=safe_convert(row[119]) if len(row) > 119 else None,
+            warning5=safe_convert(row[120]) if len(row) > 120 else None,
+            warning6=safe_convert(row[121]) if len(row) > 121 else None,
+            warning7=safe_convert(row[122]) if len(row) > 122 else None,
+            warning8=safe_convert(row[123]) if len(row) > 123 else None,
+            warning9=safe_convert(row[124]) if len(row) > 124 else None,
+            warning10=safe_convert(row[125]) if len(row) > 125 else None,
+            emotion1=safe_convert(row[126]) if len(row) > 126 else None,
+            emotion2=safe_convert(row[127]) if len(row) > 127 else None,
+            emotion3=safe_convert(row[128]) if len(row) > 128 else None,
+            emotion4=safe_convert(row[129]) if len(row) > 129 else None,
+            emotion5=safe_convert(row[130]) if len(row) > 130 else None,
+            emotion6=safe_convert(row[131]) if len(row) > 131 else None,
+            emotion7=safe_convert(row[132]) if len(row) > 132 else None,
+            emotion8=safe_convert(row[133]) if len(row) > 133 else None,
+            emotion9=safe_convert(row[134]) if len(row) > 134 else None,
+            emotion10=safe_convert(row[135]) if len(row) > 135 else None,
+            solution1=safe_convert(row[136]) if len(row) > 136 else None,
+            solution2=safe_convert(row[137]) if len(row) > 137 else None,
+            solution3=safe_convert(row[138]) if len(row) > 138 else None,
+            solution4=safe_convert(row[139]) if len(row) > 139 else None,
+            solution5=safe_convert(row[140]) if len(row) > 140 else None,
+            solution6=safe_convert(row[141]) if len(row) > 141 else None,
+            solution7=safe_convert(row[142]) if len(row) > 142 else None,
+            solution8=safe_convert(row[143]) if len(row) > 143 else None,
+            solution9=safe_convert(row[144]) if len(row) > 144 else None,
+            solution10=safe_convert(row[145]) if len(row) > 145 else None,
+            dialog1=safe_convert_decimal(row[146]) if len(row) > 146 else None,
+            dialog2=safe_convert_decimal(row[147]) if len(row) > 147 else None,
+            dialog3=safe_convert_decimal(row[148]) if len(row) > 148 else None,
+            dialog4=safe_convert_decimal(row[149]) if len(row) > 149 else None,
+            dialog5=safe_convert_decimal(row[150]) if len(row) > 150 else None,
+            dialog6=safe_convert_decimal(row[151]) if len(row) > 151 else None,
+            dialog7=safe_convert_decimal(row[152]) if len(row) > 152 else None,
+            dialog8=safe_convert_decimal(row[153]) if len(row) > 153 else None,
+            dialog9=safe_convert_decimal(row[154]) if len(row) > 154 else None,
+            dialog10=safe_convert_decimal(row[155]) if len(row) > 155 else None,
+            comment1=row[187] if len(row) > 187 else "",
+            comment2=row[188] if len(row) > 188 else "",
+            comment3=row[189] if len(row) > 189 else "",
+            comment4=row[190] if len(row) > 190 else "",
+            comment5=row[191] if len(row) > 191 else "",
+            comment6=row[192] if len(row) > 192 else "",
+            comment7=row[193] if len(row) > 193 else "",
+            comment8=row[194] if len(row) > 194 else "",
+            comment9=row[195] if len(row) > 195 else "",
+            comment10=row[196] if len(row) > 196 else "",
+            mis1=safe_convert(row[197]) if len(row) > 197 else None,
+            mis2=safe_convert(row[198]) if len(row) > 198 else None,
+            mis3=safe_convert(row[199]) if len(row) > 199 else None
         )
-        print(f"Создан ScoresForMonth для оператора: {name}")
+        print(f"Загружена запись: {name} ({month})")
 
     print("Импорт завершён.")
+
 
 
 

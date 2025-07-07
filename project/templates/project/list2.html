@@ -16,7 +16,7 @@
     <header class="top-row">
         <a href="{% url 'index' %}?operator-name={{ operator.name }}">
             <div class="widget logo">
-            <img id="logo-img"
+            <img id="logo"
                  src="{% static 'img/logo.png' %}"
                  alt="Company Logo">
                 <div class="gauge" style="position: relative; width: 200px; height: 200px;">
@@ -114,6 +114,7 @@
     </main>
   </div>
 
+<script src="{% static 'back.js' %}"></script>
 <script>
     const ctx = document.getElementById('scoreChart').getContext('2d');
 const score = parseFloat("{{ chart_score|default:0 }}");
@@ -425,6 +426,12 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   });
+
+    const backgrounds = [
+        {% for bg in backgrounds %}
+            "{{ bg.image.url }}"{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
 </script>
 </body>
 </html>

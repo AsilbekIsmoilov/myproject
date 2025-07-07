@@ -4,7 +4,7 @@
 <div class="block1">
     <div class="group1">
         <div class="logo-div" style="position: relative; cursor: pointer;">
-            <img id="logo-img"
+            <img id="logo"
                  src="{% static 'img/logo.png' %}"
                  alt="Company Logo">
         </div>
@@ -98,6 +98,15 @@
     <div style="clear: both;"></div>
 </div>
 </form>
+<script src="{% static 'back.js' %}"></script>
+<script>
+    const backgrounds = [
+        {% for bg in backgrounds %}
+            "{{ bg.image.url }}"{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+</script>
+
 
 
 

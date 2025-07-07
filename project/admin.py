@@ -36,6 +36,9 @@ class Schedule1009Admin(admin.ModelAdmin):
 class Schedule112Admin(admin.ModelAdmin):
         list_display = ['title','pdf_file','created_at']
 
+class BackgroundImageAdmin(admin.ModelAdmin):
+    list_display = ['id', 'image', 'order']
+    ordering = ['order']
 
 
 admin.site.register(CallData, CallDataAdmin)
@@ -46,3 +49,4 @@ admin.site.register(Schedule1009,Schedule1009Admin)
 admin.site.register(Schedule112,Schedule112Admin)
 admin.site.register(Management,ManagementAdmin)
 admin.site.register(Management112,ManagementAdmin112)
+admin.site.register(BackgroundImage,BackgroundImageAdmin)

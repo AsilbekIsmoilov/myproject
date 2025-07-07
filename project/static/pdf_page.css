@@ -65,14 +65,6 @@ button:hover {
   align-items: center;
   padding: 10px 20px;
 }
-
-#logo-img {
-  cursor: pointer;
-  width: 231px;
-  margin-top: 9px;
-  margin-left: 58px;
-}
-
 .centered-buttons {
   display: flex;
   flex-direction: row;

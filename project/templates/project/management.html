@@ -14,7 +14,9 @@
 <body>
 <div class="fixed-header">
   <div class="logo-container">
-    <img src="{% static 'img/logo.png' %}" id="logo-img" alt="Logo">
+            <img id="logo"
+                 src="{% static 'img/logo.png' %}"
+                 alt="Company Logo" style="cursor: pointer;width: 231px;margin-top: 9px;margin-left: 58px;">
     <div class="centered-buttons">
         <button class="pdf-button" onclick="showPdf('{{ latest_doc.pdf_file.url }}', this)">Начальство 255</button>
         <button class="pdf-button" onclick="showPdf('{{ latest_doc_112.pdf_file.url }}', this)">Начальство 229</button>
@@ -37,5 +39,13 @@
   </script>
 
   <script src="{% static 'management.js' %}"></script>
+  <script src="{% static 'back.js' %}"></script>
+  <script>
+        const backgrounds = [
+        {% for bg in backgrounds %}
+            "{{ bg.image.url }}"{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+  </script>
 </body>
 </html>

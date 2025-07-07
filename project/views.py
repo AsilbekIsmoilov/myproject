@@ -29,6 +29,7 @@ def index(request):
     selected_name = get_operator_from_request(request)
     selected_month_param = request.GET.get("month")
     operators = CallData.objects.all().order_by('name')
+    backgrounds = BackgroundImage.objects.order_by('order')
 
     selected_operator = None
     monthly_scores = None
@@ -87,6 +88,7 @@ def index(request):
         "selected_month_pair": selected_month_pair,
         "month_names_in_db": month_names_in_db,
         "selected_month_param": selected_month_param,
+        'backgrounds': backgrounds,
     })
 
 def get_quarter_score(operator: CallData, quarter: str) -> float | None:
@@ -316,6 +318,8 @@ def list2(request):
     monthly_marks = []
     quarter_comments = []
     quarter_mises = []
+    backgrounds = BackgroundImage.objects.order_by('order')
+
 
     MONTH_NAME_TO_NUMBER = {
         "Янв": 1, "Фев": 2, "Мар": 3, "Апр": 4,
@@ -357,6 +361,7 @@ def list2(request):
         "quarter_comments": json.dumps(quarter_comments),
         "quarter_mises": json.dumps(quarter_mises),
         "quarter_penalties": quarter_penalties,
+        'backgrounds': backgrounds,
     }
 
     return render(request, 'project/list2.html', context)
@@ -437,6 +442,7 @@ def delete_db(request):
 
 def schedule(request):
     operator_name = get_operator_from_request(request)
+    backgrounds = BackgroundImage.objects.order_by('order')
     selected_operator = None
     if operator_name:
         request.session["selected_operator"] = operator_name
@@ -459,6 +465,7 @@ def schedule(request):
         "latest_1000": latest_1000,
         "latest_1009": latest_1009,
         "latest_112": latest_112,
+        'backgrounds': backgrounds,
     }
 
     return render(request, 'project/schedule.html', context)
@@ -466,6 +473,7 @@ def schedule(request):
 
 def management(request):
     operator_name = get_operator_from_request(request)
+    backgrounds = BackgroundImage.objects.order_by('order')
     selected_operator = None
     if operator_name:
         request.session["selected_operator"] = operator_name
@@ -484,6 +492,7 @@ def management(request):
         "management_documents_112": management_documents_112,
         "latest_doc": latest_doc,
         "latest_doc_112": latest_doc_112,
+        'backgrounds': backgrounds,
     }
     return render(request, 'project/management.html', context)
 
