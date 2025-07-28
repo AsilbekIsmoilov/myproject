@@ -1,0 +1,188 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="uz">
+{% include 'components/head.html' %}
+  <link rel="stylesheet" href="{% static 'sidebar.css' %}">
+<body>
+<div class="container fixed-wrapper">
+    {% include 'project/sidebar.html' %}
+    <div class="wrapper">
+        <div class="main-container">
+            <div class="left-column">
+                <!--                BLOCK 1 START -->
+                {% include 'blocks/block1.html' %}
+                <!--                BLOCK 1 END-->
+                <!--                BLOCK 2 START -->
+                {% include 'blocks/block2.html' %}
+                <!--                BLOCK 2 END-->
+            </div>
+            <!-- ПРАВАЯ КОЛОНКА -->
+            <div class="right-column">
+                <!--                BLOCK 3 START-->
+                {% include 'blocks/block3.html' %}
+                <!--                BLOCK 3 END-->
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const scoreElement = document.querySelector("#score-value");
+
+
+const ctx = document.getElementById('scoreChart').getContext('2d');
+    const score = parseInt("{% if monthly_scores %}{{ monthly_scores.mark }}{% else %}{{ selected_operator.mark }}{% endif %}", 10);
+
+let scoreColor = '';
+if (score < 80) {
+    scoreColor = '#ED2100';
+} else if (score <= 82) {
+    scoreColor = '#ffeb3b';
+} else {
+    scoreColor = '#00ff00';
+}
+
+new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Баллы', 'Остаток'],
+        datasets: [{
+            label: 'Оценка',
+            data: [score, 100 - score],
+            backgroundColor: [scoreColor, 'transparent'],
+            borderColor: ['#ffffff', '#ffffff'],
+            borderWidth: 1.5,
+            borderRadius: 01,
+            spacing: 5
+        }]
+    },
+    options: {
+        cutout: '70%',
+        responsive: false,
+        plugins: {
+            legend: {
+                display: false
+            },
+            tooltip: {
+                enabled: false
+            }
+        }
+    }
+});
+let currentIndex = -1;
+
+function filterDropdown() {
+    const input = document.getElementById("operator-name");
+    const filter = input.value.trim().toLowerCase();
+    const dropdown = document.getElementById("dropdown");
+    const items = dropdown.getElementsByClassName("dropdown-item");
+
+    if (filter.length === 0) {
+        dropdown.style.display = "none";
+        return;
+    }
+
+    let anyVisible = false;
+    currentIndex = -1;
+
+    for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        const fullName = item.getAttribute("data-name").toLowerCase();
+        const numberMatch = fullName.match(/\((\d+)\)/);
+        const operatorNumber = numberMatch ? numberMatch[1] : "";
+
+        if (fullName.includes(filter) || operatorNumber === filter) {
+            item.style.display = "block";
+            anyVisible = true;
+        } else {
+            item.style.display = "none";
+        }
+
+        item.style.backgroundColor = "";
+    }
+
+    dropdown.style.display = anyVisible ? "block" : "none";
+}
+
+function highlightItem(items) {
+    for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        if (i === currentIndex) {
+            item.style.backgroundColor = "#ddd";
+            item.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        } else {
+            item.style.backgroundColor = "";
+        }
+    }
+}
+
+function handleKeyDown(event) {
+    const input = document.getElementById("operator-name");
+    const dropdown = document.getElementById("dropdown");
+    const items = Array.from(dropdown.getElementsByClassName("dropdown-item"))
+        .filter(item => item.style.display !== "none");
+
+    if (items.length === 0) return;
+
+    if (event.key === "ArrowDown") {
+        event.preventDefault();
+        if (currentIndex < items.length - 1) {
+            currentIndex++;
+            highlightItem(items);
+        }
+    } else if (event.key === "ArrowUp") {
+        event.preventDefault();
+        if (currentIndex > 0) {
+            currentIndex--;
+            highlightItem(items);
+        }
+    } else if (event.key === "Enter") {
+        event.preventDefault();
+
+        if (input.value.trim() === "") {
+            return;
+        }
+
+        let selectedName = null;
+
+        if (currentIndex === -1 && items.length > 0) {
+            selectedName = items[0].getAttribute("data-name");
+        } else if (currentIndex >= 0 && items[currentIndex]) {
+            selectedName = items[currentIndex].getAttribute("data-name");
+        }
+
+        if (selectedName) {
+            input.value = selectedName;
+            dropdown.style.display = "none";
+            currentIndex = -1;
+            document.getElementById("operator-form").submit();
+        }
+    }
+}
+document.getElementById("operator-name").addEventListener("input", filterDropdown);
+
+document.getElementById("operator-name").addEventListener("keydown", handleKeyDown);
+
+document.querySelectorAll(".dropdown-item").forEach(item => {
+    item.addEventListener("click", function() {
+        const name = this.getAttribute("data-name");
+        document.getElementById("operator-name").value = name;
+        document.getElementById("dropdown").style.display = "none";
+        currentIndex = -1;
+        document.getElementById("operator-form").submit();
+    });
+});
+
+document.addEventListener("click", function(event) {
+    const input = document.getElementById("operator-name");
+    const dropdown = document.getElementById("dropdown");
+    if (!input.contains(event.target) && !dropdown.contains(event.target)) {
+        dropdown.style.display = "none";
+    }
+});
+</script>
+
+</body>
+</html>

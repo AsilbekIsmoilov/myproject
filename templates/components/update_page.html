@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{title}}</title>
+</head>
+<body>
+<h2>Выберите действие:</h2>
+<form method="get" action="{% url 'update_process' 'current' %}" target="_blank">
+  <button type="submit">Обновить текущий месяц</button>
+</form>
+<br>
+
+<form method="get" action="{% url 'update_process' 'archive' %}" target="_blank">
+  <button type="submit">Обновить архив</button>
+</form>
+<br>
+<form method="get" action="{% url 'update_process' 'records' %}" target="_blank">
+  <button type="submit">Загрузить записей</button>
+</form>
+<br>
+<form method="get" action="{% url 'update_process' 'delete_records' %}" target="_blank">
+  <button type="submit">Удалить записей</button>
+</form>
+<br>
+      <div style="text-align: start;">
+  <form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">
+      Выйти
+    </button>
+  </form>
+</div>
+
+</body>
+</html>

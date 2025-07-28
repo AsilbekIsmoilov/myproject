@@ -1,0 +1,224 @@
+{% load static %}
+
+<div class="block2">
+    <div class="row">
+        <div class="criteria">Дата и время звонка</div>
+        <div class="data">{% if monthly_scores%}{{ monthly_scores.code1 }}{% else %}{{selected_operator.code1}}{% endif %}</div>
+        <div class="data">{% if monthly_scores%}{{ monthly_scores.code2 }}{% else %}{{selected_operator.code2}}{% endif %}</div>
+        <div class="data">{% if monthly_scores%}{{ monthly_scores.code3 }}{% else %}{{selected_operator.code3}}{% endif %}</div>
+        <div class="data">{% if monthly_scores%}{{ monthly_scores.code4 }}{% else %}{{selected_operator.code4}}{% endif %}</div>
+        <div class="data">{% if monthly_scores%}{{ monthly_scores.code5 }}{% else %}{{selected_operator.code5}}{% endif %}</div>
+        <div class="data">{% if monthly_scores%}{{ monthly_scores.code6 }}{% else %}{{selected_operator.code6}}{% endif %}</div>
+        <div class="data">{% if monthly_scores%}{{ monthly_scores.code7 }}{% else %}{{selected_operator.code7}}{% endif %}</div>
+        <div class="data">{% if monthly_scores%}{{ monthly_scores.code8 }}{% else %}{{selected_operator.code8}}{% endif %}</div>
+        <div class="data">{% if monthly_scores%}{{ monthly_scores.code9 }}{% else %}{{selected_operator.code9}}{% endif %}</div>
+        <div class="data">{% if monthly_scores%}{{ monthly_scores.code10 }}{% else %}{{selected_operator.code10}}{% endif %}</div>
+
+    </div>
+    <div class="row">
+        <div class="criteria">Код звонка</div>
+        <div class="code">{% if monthly_scores %}{{ monthly_scores.call1 }}{% else %}{{selected_operator.call1}}{% endif %}</div>
+        <div class="code">{% if monthly_scores %}{{ monthly_scores.call2 }}{% else %}{{selected_operator.call2}}{% endif %}</div>
+        <div class="code">{% if monthly_scores %}{{ monthly_scores.call3 }}{% else %}{{selected_operator.call3}}{% endif %}</div>
+        <div class="code">{% if monthly_scores %}{{ monthly_scores.call4 }}{% else %}{{selected_operator.call4}}{% endif %}</div>
+        <div class="code">{% if monthly_scores %}{{ monthly_scores.call5 }}{% else %}{{selected_operator.call5}}{% endif %}</div>
+        <div class="code">{% if monthly_scores %}{{ monthly_scores.call6 }}{% else %}{{selected_operator.call6}}{% endif %}</div>
+        <div class="code">{% if monthly_scores %}{{ monthly_scores.call7 }}{% else %}{{selected_operator.call7}}{% endif %}</div>
+        <div class="code">{% if monthly_scores %}{{ monthly_scores.call8 }}{% else %}{{selected_operator.call8}}{% endif %}</div>
+        <div class="code">{% if monthly_scores %}{{ monthly_scores.call9 }}{% else %}{{selected_operator.call9}}{% endif %}</div>
+        <div class="code">{% if monthly_scores %}{{ monthly_scores.call10 }}{% else %}{{selected_operator.call10}}{% endif %}</div>
+    </div>
+    <div class="row">
+        <div class="criteria">Название услуги</div>
+        <div class="service_name">{% if monthly_scores %}{{ monthly_scores.service1|truncatechars:20 }}{% else %}{{selected_operator.service1|truncatechars:20}}{% endif %}</div>
+        <div class="service_name">{% if monthly_scores %}{{ monthly_scores.service2|truncatechars:20 }}{% else %}{{selected_operator.service2|truncatechars:20}}{% endif %}</div>
+        <div class="service_name">{% if monthly_scores %}{{ monthly_scores.service3|truncatechars:20 }}{% else %}{{selected_operator.service3|truncatechars:20}}{% endif %}</div>
+        <div class="service_name">{% if monthly_scores %}{{ monthly_scores.service4|truncatechars:20 }}{% else %}{{selected_operator.service4|truncatechars:20}}{% endif %}</div>
+        <div class="service_name">{% if monthly_scores %}{{ monthly_scores.service5|truncatechars:20 }}{% else %}{{selected_operator.service5|truncatechars:20}}{% endif %}</div>
+        <div class="service_name">{% if monthly_scores %}{{ monthly_scores.service6|truncatechars:20 }}{% else %}{{selected_operator.service6|truncatechars:20}}{% endif %}</div>
+        <div class="service_name">{% if monthly_scores %}{{ monthly_scores.service7|truncatechars:20 }}{% else %}{{selected_operator.service7|truncatechars:20}}{% endif %}</div>
+        <div class="service_name">{% if monthly_scores %}{{ monthly_scores.service8|truncatechars:20 }}{% else %}{{selected_operator.service8|truncatechars:20}}{% endif %}</div>
+        <div class="service_name">{% if monthly_scores %}{{ monthly_scores.service9|truncatechars:20 }}{% else %}{{selected_operator.service9|truncatechars:20}}{% endif %}</div>
+        <div class="service_name">{% if monthly_scores %}{{ monthly_scores.service10|truncatechars:20 }}{% else %}{{selected_operator.service10|truncatechars:20}}{% endif %}</div>
+
+    </div>
+    <div class="row">
+        <div class="criteria">Приветствие</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.greeting1|default:""}}{% else %}{{selected_operator.greeting1|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.greeting2|default:""}}{% else %}{{selected_operator.greeting2|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.greeting3|default:""}}{% else %}{{selected_operator.greeting3|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.greeting4|default:""}}{% else %}{{selected_operator.greeting4|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.greeting5|default:""}}{% else %}{{selected_operator.greeting5|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.greeting6|default:""}}{% else %}{{selected_operator.greeting6|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.greeting7|default:""}}{% else %}{{selected_operator.greeting7|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.greeting8|default:""}}{% else %}{{selected_operator.greeting8|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.greeting9|default:""}}{% else %}{{selected_operator.greeting9|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.greeting10|default:""}}{% else %}{{selected_operator.greeting10|default:""}}{% endif %}</div>
+
+    </div>
+    <div class="row">
+        <div class="criteria">Внимательное слушание</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.hearing1|default:""}}{% else %}{{selected_operator.hearing1|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.hearing2|default:""}}{% else %}{{selected_operator.hearing2|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.hearing3|default:""}}{% else %}{{selected_operator.hearing3|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.hearing4|default:""}}{% else %}{{selected_operator.hearing4|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.hearing5|default:""}}{% else %}{{selected_operator.hearing5|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.hearing6|default:""}}{% else %}{{selected_operator.hearing6|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.hearing7|default:""}}{% else %}{{selected_operator.hearing7|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.hearing8|default:""}}{% else %}{{selected_operator.hearing8|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.hearing9|default:""}}{% else %}{{selected_operator.hearing9|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.hearing10|default:""}}{% else %}{{selected_operator.hearing10|default:""}}{% endif %}</div>
+    </div>
+    <div class="row">
+        <div class="criteria">Использование уточняющих вопросов</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.question1|default:"" }}{% else %}{{selected_operator.question1|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.question2|default:"" }}{% else %}{{selected_operator.question2|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.question3|default:"" }}{% else %}{{selected_operator.question3|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.question4|default:"" }}{% else %}{{selected_operator.question4|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.question5|default:"" }}{% else %}{{selected_operator.question5|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.question6|default:"" }}{% else %}{{selected_operator.question6|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.question7|default:"" }}{% else %}{{selected_operator.question7|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.question8|default:"" }}{% else %}{{selected_operator.question8|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.question9|default:"" }}{% else %}{{selected_operator.question9|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.question10|default:"" }}{% else %}{{selected_operator.question10|default:""}}{% endif %}</div>
+
+    </div>
+    <div class="row">
+        <div class="criteria">Заинтересованность в проблеме</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.interest1|default:"" }}{% else %}{{selected_operator.interest1|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.interest2|default:"" }}{% else %}{{selected_operator.interest2|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.interest3|default:"" }}{% else %}{{selected_operator.interest3|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.interest4|default:"" }}{% else %}{{selected_operator.interest4|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.interest5|default:"" }}{% else %}{{selected_operator.interest5|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.interest6|default:"" }}{% else %}{{selected_operator.interest6|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.interest7|default:"" }}{% else %}{{selected_operator.interest7|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.interest8|default:"" }}{% else %}{{selected_operator.interest8|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.interest9|default:"" }}{% else %}{{selected_operator.interest9|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.interest10|default:"" }}{% else %}{{selected_operator.interest10|default:""}}{% endif %}</div>
+
+    </div>
+    <div class="row">
+        <div class="criteria">Понятное предоставление информации</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.cons1|default:"" }}{% else %}{{selected_operator.cons1|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.cons2|default:"" }}{% else %}{{selected_operator.cons2|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.cons3|default:"" }}{% else %}{{selected_operator.cons3|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.cons4|default:"" }}{% else %}{{selected_operator.cons4|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.cons5|default:"" }}{% else %}{{selected_operator.cons5|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.cons6|default:"" }}{% else %}{{selected_operator.cons6|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.cons7|default:"" }}{% else %}{{selected_operator.cons7|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.cons8|default:"" }}{% else %}{{selected_operator.cons8|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.cons9|default:"" }}{% else %}{{selected_operator.cons9|default:""}}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.cons10|default:"" }}{% else %}{{selected_operator.cons10|default:""}}{% endif %}</div>
+    </div>
+    <div class="row">
+        <div class="criteria">Доброжелательность, Вежливость</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.polite1|default:"" }}{% else %}{{ selected_operator.polite1|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.polite2|default:"" }}{% else %}{{ selected_operator.polite2|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.polite3|default:"" }}{% else %}{{ selected_operator.polite3|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.polite4|default:"" }}{% else %}{{ selected_operator.polite4|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.polite5|default:"" }}{% else %}{{ selected_operator.polite5|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.polite6|default:"" }}{% else %}{{ selected_operator.polite6|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.polite7|default:"" }}{% else %}{{ selected_operator.polite7|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.polite8|default:"" }}{% else %}{{ selected_operator.polite8|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.polite9|default:"" }}{% else %}{{ selected_operator.polite9|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.polite10|default:"" }}{% else %}{{ selected_operator.polite10|default:"" }}{% endif %}</div>
+
+    </div>
+    <div class="row">
+        <div class="criteria">Грамотная речь</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.speech1|default:"" }}{% else %}{{ selected_operator.speech1|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.speech2|default:"" }}{% else %}{{ selected_operator.speech2|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.speech3|default:"" }}{% else %}{{ selected_operator.speech3|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.speech4|default:"" }}{% else %}{{ selected_operator.speech4|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.speech5|default:"" }}{% else %}{{ selected_operator.speech5|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.speech6|default:"" }}{% else %}{{ selected_operator.speech6|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.speech7|default:"" }}{% else %}{{ selected_operator.speech7|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.speech8|default:"" }}{% else %}{{ selected_operator.speech8|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.speech9|default:"" }}{% else %}{{ selected_operator.speech9|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.speech10|default:"" }}{% else %}{{ selected_operator.speech10|default:"" }}{% endif %}</div>
+    </div>
+    <div class="row">
+        <div class="criteria">{% if selected_operator.group == "1009"%}Установка на "Удержание" {% else %}Оформление и обработка заявок{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.note1|default:"" }}{% else %}{{ selected_operator.note1|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.note2|default:"" }}{% else %}{{ selected_operator.note2|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.note3|default:"" }}{% else %}{{ selected_operator.note3|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.note4|default:"" }}{% else %}{{ selected_operator.note4|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.note5|default:"" }}{% else %}{{ selected_operator.note5|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.note6|default:"" }}{% else %}{{ selected_operator.note6|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.note7|default:"" }}{% else %}{{ selected_operator.note7|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.note8|default:"" }}{% else %}{{ selected_operator.note8|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.note9|default:"" }}{% else %}{{ selected_operator.note9|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.note10|default:"" }}{% else %}{{ selected_operator.note10|default:"" }}{% endif %}</div>
+    </div>
+    <div class="row">
+        <div class="criteria">Предупреждение об ожидании на линии</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.warning1|default:"" }}{% else %}{{ selected_operator.warning1|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.warning2|default:"" }}{% else %}{{ selected_operator.warning2|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.warning3|default:"" }}{% else %}{{ selected_operator.warning3|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.warning4|default:"" }}{% else %}{{ selected_operator.warning4|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.warning5|default:"" }}{% else %}{{ selected_operator.warning5|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.warning6|default:"" }}{% else %}{{ selected_operator.warning6|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.warning7|default:"" }}{% else %}{{ selected_operator.warning7|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.warning8|default:"" }}{% else %}{{ selected_operator.warning8|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.warning9|default:"" }}{% else %}{{ selected_operator.warning9|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.warning10|default:"" }}{% else %}{{ selected_operator.warning10|default:"" }}{% endif %}</div>
+    </div>
+    <div class="row">
+        <div class="criteria">{% if selected_operator.group == "1009"%}Скорость обслуживания{% else %}Эмоциональная окраска голоса{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.emotion1|default:"" }}{% else %}{{ selected_operator.emotion1|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.emotion2|default:"" }}{% else %}{{ selected_operator.emotion2|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.emotion3|default:"" }}{% else %}{{ selected_operator.emotion3|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.emotion4|default:"" }}{% else %}{{ selected_operator.emotion4|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.emotion5|default:"" }}{% else %}{{ selected_operator.emotion5|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.emotion6|default:"" }}{% else %}{{ selected_operator.emotion6|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.emotion7|default:"" }}{% else %}{{ selected_operator.emotion7|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.emotion8|default:"" }}{% else %}{{ selected_operator.emotion8|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.emotion9|default:"" }}{% else %}{{ selected_operator.emotion9|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.emotion10|default:"" }}{% else %}{{ selected_operator.emotion10|default:"" }}{% endif %}</div>
+    </div>
+    <div class="row">
+        <div class="criteria">Прощание</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.solution1|default:"" }}{% else %}{{ selected_operator.solution1|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.solution2|default:"" }}{% else %}{{ selected_operator.solution2|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.solution3|default:"" }}{% else %}{{ selected_operator.solution3|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.solution4|default:"" }}{% else %}{{ selected_operator.solution4|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.solution5|default:"" }}{% else %}{{ selected_operator.solution5|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.solution6|default:"" }}{% else %}{{ selected_operator.solution6|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.solution7|default:"" }}{% else %}{{ selected_operator.solution7|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.solution8|default:"" }}{% else %}{{ selected_operator.solution8|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.solution9|default:"" }}{% else %}{{ selected_operator.solution9|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.solution10|default:"" }}{% else %}{{ selected_operator.solution10|default:"" }}{% endif %}</div>
+    </div>
+    <div class="row">
+        <div class="criteria">Оценка диалога</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.dialog1|default:"" }}{% else %}{{ selected_operator.dialog1|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.dialog2|default:"" }}{% else %}{{ selected_operator.dialog2|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.dialog3|default:"" }}{% else %}{{ selected_operator.dialog3|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.dialog4|default:"" }}{% else %}{{ selected_operator.dialog4|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.dialog5|default:"" }}{% else %}{{ selected_operator.dialog5|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.dialog6|default:"" }}{% else %}{{ selected_operator.dialog6|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.dialog7|default:"" }}{% else %}{{ selected_operator.dialog7|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.dialog8|default:"" }}{% else %}{{ selected_operator.dialog8|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.dialog9|default:"" }}{% else %}{{ selected_operator.dialog9|default:"" }}{% endif %}</div>
+        <div class="score">{% if monthly_scores %}{{ monthly_scores.dialog10|default:"" }}{% else %}{{ selected_operator.dialog10|default:"" }}{% endif %}</div>
+    </div>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const scores = document.querySelectorAll(".score");
+
+    scores.forEach(cell => {
+      const text = cell.textContent.trim().replace(",", ".");
+      const value = parseFloat(text);
+
+      if (isNaN(value)) return;
+
+      if (value < 3) {
+        cell.classList.add("red-text");
+      } else if (value > 3) {
+        cell.classList.add("green-text");
+      }
+      // value === 3 → остаётся без стиля
+    });
+  });
+</script>

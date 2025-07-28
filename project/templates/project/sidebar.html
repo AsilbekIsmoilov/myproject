@@ -1,0 +1,104 @@
+{% load static %}
+<div class="sidebar">
+  <nav class="sidebar-nav">
+    <ul>
+        <li class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">
+        <a href="{% url 'index' %}?operator-name={{ request.session.selected_operator }}" class="sidebar-link">
+          <span class="sidebar-icon"><img src="{% static 'img/list.png' %}"></span>
+          <span class="sidebar-text">Лист контроль</span>
+        </a>
+      </li>
+      <li class="{% if request.resolver_match.url_name == 'list2' %}active{% endif %}">
+        <a href="{% url 'list2' %}?operator-name={{ request.session.selected_operator }}" class="sidebar-link">
+          <span class="sidebar-icon"><img src="{% static 'img/stats.png' %}"></span>
+          <span class="sidebar-text">Статистика</span>
+        </a>
+      </li>
+      <li class="has-submenu {% if request.resolver_match.url_name == 'schedule' %}active{% endif %}">
+        <a class="sidebar-link">
+          <span class="sidebar-icon"><img src="{% static 'img/grafik.png' %}"></span>
+          <span class="sidebar-text">График</span>
+        </a>
+        <ul class="submenu">
+          <li><a href="{% url 'latest_schedule' '1000' %}" class="submenu-link" data-chart="1000">График 1000</a></li>
+          <li><a href="{% url 'latest_schedule' '1009' %}" class="submenu-link" data-chart="1009">График 1009</a></li>
+          <li><a href="{% url 'latest_schedule' '112' %}" class="submenu-link" data-chart="112">График 112</a></li>
+        </ul>
+      </li>
+      <li class="{% if request.resolver_match.url_name == 'management' %}active{% endif %}">
+        <a href="{% url 'management' %}?operator-name={{ request.session.selected_operator }}" class="sidebar-link">
+          <span class="sidebar-icon"><img src="{% static 'img/manage.png' %}"></span>
+          <span class="sidebar-text">Руководство</span>
+        </a>
+      </li>
+
+    </ul>
+  </nav>
+</div>
+<script>
+// JavaScript для интерактивности сайдбара
+document.addEventListener('DOMContentLoaded', function () {
+    // Обработчики для основных ссылок сайдбара
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            // Проверяем, является ли это элементом с подменю
+            if (this.parentElement.classList.contains('has-submenu')) {
+                // Переключаем активное состояние подменю
+                this.parentElement.classList.toggle('active');
+                return;
+            }
+
+            // Убираем активный класс со всех элементов
+            document.querySelectorAll('.sidebar-nav li').forEach(li => {
+                li.classList.remove('active');
+            });
+
+            // Добавляем активный класс к текущему элементу
+            this.parentElement.classList.add('active');
+
+            // Логирование для отладки
+            console.log('Переключение на: ' + this.querySelector('.sidebar-text').textContent);
+
+            // ✅ Выполняем переход по ссылке
+            const href = this.getAttribute('href');
+            if (href) {
+                window.location.href = href;
+            }
+        });
+    });
+
+    // Обработчики для подменю
+    document.querySelectorAll('.submenu-link').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            // Убираем активный класс со всех подменю
+            document.querySelectorAll('.submenu-link').forEach(sublink => {
+                sublink.classList.remove('active');
+            });
+
+            // Добавляем активный класс к выбранному подменю
+            this.classList.add('active');
+
+            const chartId = this.getAttribute('data-chart');
+            console.log('Переключение на подраздел: ' + this.textContent + ' (ID: ' + chartId + ')');
+
+            const href = this.getAttribute('href');
+            if (href) {
+                window.location.href = href;
+            }
+        });
+    });
+
+    const sidebar = document.querySelector('.sidebar');
+    if (sidebar) {
+        sidebar.addEventListener('mouseleave', function () {
+            document.querySelectorAll('.has-submenu.active').forEach(submenuItem => {
+                submenuItem.classList.remove('active');
+            });
+        });
+    }
+});
+    </script>

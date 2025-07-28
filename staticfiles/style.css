@@ -1,0 +1,669 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color:white;
+}
+
+/* Общие настройки */
+html, body {
+  width: 100vw;
+  gap: 20px;
+  font-family: Arial, sans-serif;
+
+  /* Фон: фотография с тёмным синим градиентом */
+  background: url("https://i.postimg.cc/0yq6vpXg/pexels-elijahsad-3473569.jpg") no-repeat center center fixed;
+  background-size: cover;
+  color: #fff;
+  transition: all 0.2s ease-in-out;
+  overflow-x: hidden;
+
+  /* Анимированный псевдо-элемент (живой градиент поверх фото) */
+  position: relative;
+  z-index: 0;
+}
+
+/* Анимированный слой */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -10 !important;
+
+
+  background: linear-gradient(135deg, rgba(0, 50, 120, 0.4), rgba(0, 20, 80, 0.3));
+  background-size: 200% 200%;
+  animation: moveGradient 15s ease infinite;
+
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes moveGradient {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.wrapper {
+    display: block;
+    margin: 0 auto;
+    max-width: 1800px;
+    }
+
+/* Основной контейнер */
+.main-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  padding: 18px;
+}
+
+/* ЛЕВАЯ КОЛОНКА */
+.left-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 0 0 68%;
+}
+
+/* ПРАВАЯ КОЛОНКА */
+.right-column {
+  flex: 0 0 28%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ---------- БЛОК 1 ---------- */
+.block1 {
+  border-radius: 30px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex: 0 0 auto;
+  width: 100%;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+.block1:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0);
+}
+
+/* GROUP1: Логотип и балл */
+.group1 {
+  display: flex;
+  flex: 0 0 25%;
+  flex-direction: column;
+  gap: 5px;
+  height: 100%;
+}
+
+.logo-div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+.logo-div img {
+  max-width: 280px;
+  height: 100%;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+  transition: transform 0.3s ease;
+}
+.logo-div img:hover {
+  transform: scale(1.01);
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
+}
+
+.score-div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background-color: rgba(255, 255, 255, 0.08);
+  padding: 0px;
+  border-radius: 30px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.score-div:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  transform: scale(1.01);
+}
+
+.score-label {
+  font-weight: bold;
+  font-size: medium;
+  margin-bottom: 25px;
+  text-align: center;
+  width: 100%;
+  color: #fff;
+}
+
+.score-value {
+  text-align: center;
+  font-size: 4rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 0 6px rgba(106,209,255,0.4);
+  transition: text-shadow 0.3s ease;
+}
+.score-value:hover {
+  text-shadow: 0 0 10px rgba(106,209,255,0.7);
+}
+
+/* GROUP2: Выбор месяца и статус */
+.group2 {
+  display: flex;
+  flex: 0 0 30%;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-height: 100%;
+  align-items: center;
+}
+
+/* month-div */
+.month-div {
+  flex: 0 0 20%;
+  background-color: rgba(255, 255, 255, 0.08);
+  padding: 10px;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 70%;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.month-div:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: scale(1.01);
+}
+
+.month-div label {
+  font-size: 1.3rem;
+  margin-bottom: 5px;
+  color: #fff;
+}
+
+/* === SELECT (#month) ===
+   Фон списка + цвет при наведении */
+#month {
+  text-align: center;
+  text-align-last: center;
+  font-size: 1rem;
+  padding: 5px 10px;
+  width: 300px;
+  border-radius: 30px;
+  background: linear-gradient(135deg, rgba(124, 154, 180, 0.473), rgba(3, 72, 136, 0.336));
+  border: 1px solid rgba(255,255,255,0.3);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  /* Сбрасываем системные стили (частично) */
+  appearance: none;    /* для Chrome, Safari */
+  -moz-appearance: none; /* для Firefox */
+}
+
+/* При hover самого select */
+#month:hover {
+  background: linear-gradient(135deg, rgba(15,58,96,0.6), rgba(0,42,80,0.6));
+  border-color: rgba(255,255,255,0.6);
+  transform: scale(1.02);
+}
+#month:focus {
+  outline: none;
+  border-color: rgba(255,255,255,0.6);
+}
+
+/* === Настройка фона выпадающего списка (option) ===
+   Важно: не все браузеры поддерживают полную стилизацию option */
+#month option {
+  background-color: #0f3a60;  /* Тёмно-синий фон для опций */
+  color: #fff;               /* Белый текст */
+  /* Можно добавить padding для опций */
+  padding: 5px 10px;
+}
+#month option:hover {
+  background-color: #12517f; /* Светлее при наведении на опцию */
+}
+
+/* Статус */
+.status-div {
+  flex: 0 0 auto;
+  width: 100%;
+  height: 161px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 30px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  z-index: -1;
+}
+.status-div:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: scale(1.01);
+}
+
+.status-label {
+  height: 50px;
+  font-weight: bold;
+  font-size: 1.7rem;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+}
+
+.status-info {
+  height: 60px;
+  font-size: 1.3rem;
+  color: #fff;
+  opacity: 0.9;
+}
+
+/* Профиль */
+.group3 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 30px;
+  padding: 0px;
+  gap: 0px;
+  flex: 0 0 43.3%;
+  height: 239px;
+  width: 100%;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+.group3:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: scale(1.01);
+}
+
+.profile-photo {
+  display: flex;
+  flex: 0 0 30%;
+}
+
+.profile-photo img {
+  display: flex;
+  max-width: 160px;
+  max-height: 215px;
+  object-fit: cover;
+  border-radius: 30px;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.profile-photo img:hover {
+  transform: scale(1.01);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+}
+
+.profile-info {
+  flex: 0 0 70%;
+  font-size: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  gap: 20px;
+}
+
+/* .profile-name select */
+.profile-name select {
+  background: linear-gradient(135deg, rgba(124, 154, 180, 0.473), rgba(3, 72, 136, 0.336));
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 30px;
+  padding: 5px 15px;
+  font-size: small;
+  max-width: 300px;
+  text-align: center;
+  text-align-last: center;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  transition: all 0.3s ease;
+
+  appearance: none;
+  -moz-appearance: none;
+}
+.profile-name select:hover {
+  background: linear-gradient(135deg, rgba(15,58,96,0.6), rgba(0,42,80,0.6));
+  transform: scale(1.01);
+  border-color: rgba(255,255,255,0.6);
+}
+/* Аналогичная стилизация опций */
+.profile-name select option {
+  background-color: #0f3a60;
+  color: #fff;
+  padding: 5px 10px;
+}
+.profile-name select option:hover {
+  background-color: #12517f;
+}
+
+/* ---------- БЛОК 2: Таблица с данными ---------- */
+.block2 {
+  background-color: rgba(255, 255, 255, 0.07);
+  border-radius: 30px;
+  padding: 10px;
+  flex: 0 0 67%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  transition: background-color 0.3s ease;
+  width: 100%;
+  position: relative;
+  z-index: 1 !important;
+}
+.block2:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: scale(1.002);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1px;
+  border-radius: 10px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.row:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  transform: scale(1.01);
+}
+
+/* Мягкий полупрозрачный градиент + пульсирующая обводка для ячеек таблицы */
+.row div {
+  position: relative;
+  background: linear-gradient(135deg, rgba(124, 154, 180, 0.473), rgba(3, 72, 136, 0.336));
+  color: #fff;
+  padding: 6px;
+  text-align: center;
+  width: 95px;
+  height: 30px;
+  border-radius: 10px;
+  box-shadow: inset 0 1px 2px rgba(255, 21, 21, 0.1);
+  transition: box-shadow 0.3s ease;
+  z-index: 1 !important;
+
+}
+.row div::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  border-radius: 10px;
+  border: 2px solid rgba(81, 106, 117, 0.411);
+  animation: borderPulse 3s ease-in-out infinite;
+}
+@keyframes borderPulse {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+.row div:hover {
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.2);
+}
+
+.row .criteria {
+  background: linear-gradient(135deg, rgba(124, 154, 180, 0.473), rgba(3, 72, 136, 0.336));
+  color: #fff;
+  width: 280px;
+  height: 36px;
+  font-size: 85%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.row .data,
+.row .code {
+  width: 95px;
+  height: 36px;
+  font-size: 80%;
+}
+
+.row .service_name {
+  width: 95px;
+  height: 36px;
+
+  font-size: 70%;
+
+  /* Новые свойства для переноса текста */
+  white-space: normal;      /* Разрешаем перенос строки */
+  word-wrap: break-word;    /* Переносим длинные слова */
+  /* Или (более современный вариант) word-break: break-all; */
+}
+}
+
+.row .Overall {
+  color: #fff;
+  font-size: 17px;
+}
+
+/* ---------- БЛОК 3: Комментарии и ошибки ---------- */
+.block3 {
+  background-color: rgba(255,255,255,0.07);
+  border-radius: 30px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  width: 100%;
+  height: 881px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  transition: background-color 0.3s ease;
+  margin-top: 15px;
+}
+.block3:hover {
+  background-color: rgba(255,255,255,0.1);
+  transform: scale(1.005);
+}
+
+.comment-title {
+  text-align: center;
+  font-size: large;
+  margin-top: 0;
+  margin-bottom: 5px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  color:white;
+}
+
+.comment-box {
+  flex: 1;
+  background-color: rgba(255,255,255,0.1);
+  border-radius: 30px;
+  padding: 10px;
+  font-size: 0.9rem;
+  overflow-y: auto;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+  transition: background-color 0.3s ease;
+}
+.comment-box:hover {
+  background-color: rgba(255,255,255,0.15);
+}
+
+.error-types {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.error-type {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.error-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #0f3a60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.error-circle:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+}
+
+.radial-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    font-size: 30px;
+}
+.score-div {
+    position: relative;
+    width: 315px;
+    height: 200px;
+    background-color: rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 20px;
+}
+
+       body {
+          font-family: Arial, sans-serif;
+        }
+
+        .profile-name {
+          margin: 20px;
+          width: 300px;
+        }
+
+        select {
+          width: 100%;
+          padding: 10px;
+          font-size: 16px;
+        }
+
+    form {
+        position: relative;
+        display: inline-block;
+        z-index: 10000;
+
+    }
+
+    #operator-name {
+        width: 300px;
+        padding: 8px;
+        font-size: 14px;
+        color: white;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color:transparent;
+    }
+
+#dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-top: none;
+    background-color: #ffffff !important;
+    z-index: 9999;
+    font-size: 14px;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    opacity: 1 !important;
+    backdrop-filter: none !important;
+    isolation: isolate;
+
+
+}
+#dropdown::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    z-index: -1;
+}
+
+    .dropdown-item {
+        padding: 8px 12px;
+        color: black;
+        cursor: pointer;
+    }
+
+    .dropdown-item:hover {
+        background-color: #f0f0f0;
+    }
+
+   #operator-name::placeholder {
+  color: white;
+  opacity: 1;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  font-family: Arial, sans-serif;
+  color: white;
+  text-align: center;
+}
+
+.profile-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}
+
+.profile-group {
+  font-size: 25px;
+  font-weight: 500;
+  margin-top: 5px;
+  color: #cce6ff;
+}
+
+.profile-date {
+  font-size: 15px;
+  font-weight: normal;
+  color: #ddd;
+  margin-top: 5px;
+}

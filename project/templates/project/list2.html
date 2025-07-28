@@ -1,0 +1,446 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Статистика</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'sidebar.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/logoo.png' %}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+{% include 'project/sidebar.html' %}
+  <div class="dashboard">
+    <header class="top-row">
+        <a href="{% url 'index' %}?operator-name={{ operator.name }}">
+            <div class="widget logo">
+            <img id="logo"
+                 src="{% static 'img/logo.png' %}"
+                 alt="Company Logo">
+                <div class="gauge" style="position: relative; width: 200px; height: 200px;">
+                    <canvas id="scoreChart" width="170" style="margin-left:120px"></canvas>
+                    {% if chart_score %}
+                    <div class="gauge-value" style="margin-left:105px; margin-top:-15px; font-size:30px">
+                        {{ chart_score}}
+                    </div>
+                    {% else %}
+                    <div class="gauge-value" style="margin-left:105px; margin-top:-15px; font-size:20px">
+                        Нет данных
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </a>
+
+    <div class="widget growth-chart">
+      <h2>Персональный рост / спад</h2>
+      <canvas id="growthChart" width="402" height="207" style="display: block;box-sizing: border-box;height: 207px;width: 402px;"></canvas>
+    </div>
+        <section class="widget criteria-ratio">
+            <h3>Соотношение критерий</h3>
+            <canvas id="ratioChart" style="height: 300px;"></canvas>
+                <p id="noDataMessage" style="display: none; color: white;">0 ошибок</p>
+        </section>
+        <div class="widget user-info">
+        <div class="info-block">
+
+                <div class="input-wrapper" style="position: relative;">
+                    {% if operator.name %}
+                    {{ operator.name }}
+                    {% else %}
+                    Нет данных
+                    {% endif %}
+                </div>
+          <!-- Группа — неинтерактивная -->
+          {% if operator.group %}
+          <div>{{operator.group}}</div>
+          {% else %}
+          <div>Нет данных</div>
+          {% endif %}
+
+          <!-- Выбор квартала -->
+            <form method="get">
+  <!-- ❗ Обязательно передаём выбранного оператора -->
+  <input type="hidden" name="operator-name" value="{{ operator.name }}">
+  <select name="quarter" id="quarterSelect" onchange="this.form.submit()">
+    <option value="Q1" {% if selected_quarter == 'Q1' %}selected{% endif %}>I Квартал</option>
+    <option value="Q2" {% if selected_quarter == 'Q2' %}selected{% endif %}>II Квартал</option>
+    <option value="Q3" {% if selected_quarter == 'Q3' %}selected{% endif %}>III Квартал</option>
+    <option value="Q4" {% if selected_quarter == 'Q4' %}selected{% endif %}>IV Квартал</option>
+  </select>
+</form>
+        </div>
+
+        <div class="photo">
+          {% if operator.photo %}
+          <img src="{{ operator.photo.url }}" alt="Operator Photo"
+             style="pointer-events: none;">
+          {% else %}
+          <img src="{% static 'img/profile.png' %}" alt="Default Avatar"
+             style="pointer-events: none;">
+          {% endif %}
+        </div>
+      </div>
+    </header>
+
+
+    <main class="main-area">
+      <section class="criteria-indicators">
+        <h2 class="criteria-title">Показатель критерий</h2>
+        <div class="indicators-top" id="donutTop"></div>
+        <div class="indicators-bottom" id="donutBottom"></div>
+      </section>
+      <section class="comments-section">
+        <h2>Комментарии</h2>
+        <div class="comments" id="commentsBox"></div>
+          <div class="legend">
+              <div class="legend-item">
+                  <div class="count">0</div>
+                  <div class="label"><span class="dot severe"></span>Грубая ошибка (–25)</div>
+              </div>
+              <div class="legend-item">
+                  <div class="count">0</div>
+                  <div class="label"><span class="dot major"></span>Ошибка (–10)</div>
+              </div>
+              <div class="legend-item">
+                  <div class="count">0</div>
+                  <div class="label"><span class="dot minor"></span>Недочёт (–2)</div>
+              </div>
+          </div>
+
+      </section>
+    </main>
+  </div>
+
+<script src="{% static 'back.js' %}"></script>
+<script>
+    const ctx = document.getElementById('scoreChart').getContext('2d');
+const score = parseFloat("{{ chart_score|default:0 }}");
+
+let scoreColor = '';
+if (score < 80) {
+    scoreColor = '#ED2100';
+} else if (score <= 82) {
+    scoreColor = '#ffeb3b';
+} else {
+    scoreColor = '#00ff00';
+}
+
+new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Баллы', 'Остаток'],
+        datasets: [{
+            data: [score, 100 - score],
+            backgroundColor: [scoreColor, '#1e293b'],
+            borderColor: ['white', 'white'],
+            borderWidth: 1.5,
+            spacing: 3
+        }]
+    },
+    options: {
+        cutout: '75%',
+        responsive: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: { enabled: false }
+        }
+    }
+});
+
+  const monthLabels = {{ month_names|safe }};
+  const donutConfig = {{ criteria_data|safe }};
+  const monthlyData = {{ monthly_marks|safe }};
+  const fullMonthNames = {
+  "Янв": "Январь",
+  "Фев": "Февраль",
+  "Мар": "Март",
+  "Апр": "Апрель",
+  "Май": "Май",
+  "Июнь": "Июнь",
+  "Июль": "Июль",
+  "Авг": "Август",
+  "Сен": "Сентябрь",
+  "Окт": "Октябрь",
+  "Ноя": "Ноябрь",
+  "Дек": "Декабрь"
+};
+
+  function renderGrowthChart() {
+  const ctx = document.getElementById("growthChart").getContext("2d");
+
+  new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: monthLabels,
+      datasets: [
+        {
+          label: "Оценка",
+          data: monthlyData,
+          fill: true,
+          tension: 0.4,
+          borderColor: "#3b82f6",
+          backgroundColor: "rgba(59,130,246,0.15)",
+          pointBackgroundColor: "#fff",
+          pointBorderColor: "#3b82f6",
+          pointRadius: 5,
+          pointHoverRadius: 7,
+          pointStyle: "circle"
+        },
+        {
+          label: "Средняя линия",
+          data: Array(monthlyData.length).fill(80), // фиксированное значение
+          borderDash: [5, 5],
+          borderColor: "#10b981",
+          pointRadius: 0,
+          borderWidth: 1,
+          fill: false
+        }
+      ]
+    },
+    options: {
+      plugins: {
+        legend: {
+          display: true,
+          labels: { color: "#ccc" }
+        },
+        tooltip: {
+          enabled: true,
+          backgroundColor: "rgba(0,0,0,0.7)",
+          titleColor: "#ff3b3b",
+          bodyColor: "#93c5fd",
+          padding: 10,
+          borderWidth: 1,
+          borderColor: "#3b82f6"
+        }
+      },
+      scales: {
+        y: {
+          min: 50,
+          max: 95,
+          ticks: { color: "#cbd5e1" },
+          grid: { color: "rgba(255,255,255,0.05)", drawTicks: false }
+        },
+        x: {
+          ticks: { color: "#e2e8f0" },
+          grid: { display: false }
+        }
+      }
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', renderGrowthChart);
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const data = {{ quarter_penalties|safe }};
+    const hasData = Array.isArray(data) && data.some(num => num > 0);
+
+    const canvas = document.getElementById("ratioChart");
+    const message = document.getElementById("noDataMessage");
+
+    if (hasData) {
+        new Chart(canvas, {
+            type: 'pie',
+            data: {
+                labels: ['1-квартал', '2-квартал', '3-квартал', '4-квартал'],
+                datasets: [{
+                    label: 'Кол-во ошибок',
+                    data: data,
+                    backgroundColor: ['#00bcd4', '#2196f3', '#ff9800', '#8bc34a'],
+                    borderColor: '#ffffff',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'right',
+                        labels: {
+                            color: '#ffffff',
+                            font: {
+                                size: 12,
+                                family: 'Arial'
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.label}: Кол-во ошибок: ${context.raw}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    } else {
+        canvas.style.display = 'none';
+        message.style.display = 'block';
+    }
+});
+
+
+  // === Донаты по критериям ===
+  const topGrid = document.getElementById("donutTop");
+  const bottomGrid = document.getElementById("donutBottom");
+
+  donutConfig.forEach((cfg, i) => {
+    const total = cfg.data.reduce((a, b) => a + b, 0);
+    const isAllZero = cfg.data.every(val => val === 0);
+
+    const wrap = document.createElement("div");
+    wrap.className = "indicator";
+    wrap.innerHTML = `
+    <h3>${cfg.title}</h3>
+    <div style="position: relative; display: inline-block;">
+    <canvas id="d${i}" style="z-index: 1; position: relative;"></canvas>
+    <div class="center-total" id="center-total-${i}" style="
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.2rem;
+      font-weight: medium;
+      color: white;
+      z-index: 0;
+      pointer-events: none;
+    ">${total}</div>
+  </div>
+  <div class="months">
+    <span data-count="${cfg.data[0]}">${monthLabels[0]}</span>
+    <span data-count="${cfg.data[1]}">${monthLabels[1]}</span>
+    <span data-count="${cfg.data[2]}">${monthLabels[2]}</span>
+  </div>
+`;
+
+    (i < 5 ? topGrid : bottomGrid).appendChild(wrap);
+
+    new Chart(document.getElementById(`d${i}`), {
+  type: "doughnut",
+  data: {
+    labels: monthLabels,
+    datasets: [{
+      data: isAllZero ? [0.0001, 0.0001, 0.0001] : cfg.data,
+      backgroundColor: isAllZero
+        ? ["transparent", "transparent", "transparent"]
+        : ['#00bcd4', '#2196f3', '#ff9800'],
+      cutout: "70%"
+    }]
+  },
+  options: {
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        enabled: !isAllZero,
+        callbacks: {
+          title: () => null, // отключает верхний заголовок
+          label: function(context) {
+          const shortMonth = context.label || '';
+          const fullMonth = fullMonthNames[shortMonth] || shortMonth;
+          const value = context.raw || 0;
+          return [`Месяц: ${fullMonth}`, `Кол-ошибок - ${value}`];
+          }
+        },
+        backgroundColor: 'rgba(0,0,0,0.85)',
+        titleFont: { weight: 'bold' },
+        bodyFont: { size: 12 },
+        titleColor: '#fff',
+        bodyColor: '#fff',
+        displayColors: false,
+        padding: {
+           top: 10,
+           bottom: 5,
+           left: 5,
+           right: 5
+        },
+          caretSize: 6,
+          cornerRadius: 6
+      }
+    },
+
+    rotation: -0.5 * Math.PI
+  }
+});
+  });
+  const comments = JSON.parse('{{ quarter_comments|escapejs }}');
+  const commentsHtml = comments.map((c, i) => `
+    <p><strong>${i + 1}) Месяц "${c.month_name}":</strong><hr> ${c.text}</p><br>
+  `).join("");
+  document.getElementById("commentsBox").innerHTML = commentsHtml;
+
+  const mises = JSON.parse('{{ quarter_mises|escapejs }}');
+
+  const counts = { severe: 0, major: 0, minor: 0 };
+
+  mises.forEach(m => {
+    if (counts[m.type] !== undefined) {
+      counts[m.type]++;
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+  const legendItems = document.querySelectorAll(".legend-item");
+
+  legendItems.forEach(item => {
+    const dot = item.querySelector(".dot");
+    const countEl = item.querySelector(".count");
+
+    let type = "";
+    if (dot.classList.contains("severe")) type = "severe";
+    if (dot.classList.contains("major"))  type = "major";
+    if (dot.classList.contains("minor"))  type = "minor";
+
+    const count = counts[type] || 0;
+    countEl.textContent = count;
+
+    countEl.classList.remove("count-red");
+
+    if (count >= 1) {
+      countEl.classList.add("count-red");
+    }
+  });
+});
+
+      console.log("MONTH LABELS:", monthLabels);
+      console.log("MONTHLY DATA:", monthlyData);
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const totals = document.querySelectorAll(".center-total");
+
+    totals.forEach(el => {
+      const value = parseFloat(el.textContent.trim().replace(",", "."));
+
+      if (!isNaN(value) && value > 2) {
+        el.style.color = "rgb(247, 63, 30)";
+        el.style.fontWeight = "bold";
+      }
+    });
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const spans = document.querySelectorAll(".months span");
+
+    spans.forEach(el => {
+      const count = parseFloat(el.getAttribute("data-count").replace(",", "."));
+
+      if (!isNaN(count) && count > 2) {
+        el.classList.add("red-text");
+      }
+    });
+  });
+
+    const backgrounds = [
+        {% for bg in backgrounds %}
+            "{{ bg.image.url }}"{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+</script>
+</body>
+</html>

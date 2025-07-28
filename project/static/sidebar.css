@@ -1,0 +1,321 @@
+.sidebar {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  width: 50px;
+  min-width: 50px;
+  max-width: 50px;
+  height: auto;
+  background: transparent;
+  z-index: 99999 !important;
+  transition: width 0.3s ease;
+  padding: 10px 0;
+  overflow: visible;
+}
+
+.sidebar:hover,
+.sidebar.expanded {
+  width: 150px;
+  min-width: 150px;
+  max-width: 150px;
+}
+
+.sidebar-nav {
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar-nav li {
+  margin-bottom: 10px;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 45px;
+  padding: 0 8px;
+  text-decoration: none;
+  color: #fff;
+  background: linear-gradient(135deg, rgba(0, 30, 60, 0.9), rgba(0, 50, 100, 0.8));
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-left: none;
+  border-radius: 0 15px 15px 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  cursor: pointer;
+  z-index: 99999 !important;
+}
+
+.sidebar:hover .sidebar-link,
+.sidebar.expanded .sidebar-link {
+  justify-content: flex-start;
+}
+
+.sidebar-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
+}
+
+.sidebar-icon img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.sidebar-text {
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-left: 0;
+  opacity: 0;
+  width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.sidebar:hover .sidebar-text,
+.sidebar.expanded .sidebar-text {
+  margin-left: 12px;
+  opacity: 1;
+  width: auto;
+  overflow: visible;
+}
+
+.sidebar-link:hover {
+  background: rgba(0, 40, 80, 0.95);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+  transform: scale(1.02);
+}
+
+.sidebar-link:hover .sidebar-icon {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6));
+}
+
+.sidebar-nav li.active .sidebar-link,
+.sidebar-link.active {
+  background: rgba(0, 60, 120, 0.95);
+  border-color: rgba(106, 255, 138, 0.8);
+  box-shadow: 0 0 15px rgba(106, 255, 138, 0.4);
+}
+
+.sidebar-nav li.active .sidebar-icon,
+.sidebar-link.active .sidebar-icon {
+  filter: drop-shadow(0 0 8px rgba(106, 255, 138, 0.8));
+}
+
+.sidebar-link:active {
+  transform: scale(0.97);
+}
+
+/* Стили для подменю с вертикальным расположением и пульсирующими линиями */
+.has-submenu {
+  position: relative;
+}
+
+.submenu {
+  position: absolute;
+  left: 106%;
+  top: -83%;
+  background: transparent;
+  min-width: 100px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
+  transition-delay: 0s;
+  z-index: 100000;
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.sidebar:hover .has-submenu:hover .submenu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  transition-delay: 0.1s;
+}
+
+.sidebar:hover .submenu:hover {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  transition-delay: 0.1s;
+}
+
+.submenu li {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  animation: slideInFromLeft 0.4s ease forwards;
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+.submenu-link {
+  display: block;
+  padding: 10px 16px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 300;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  position: relative;
+  background: linear-gradient(135deg, rgba(0, 30, 60, 0.9), rgba(0, 50, 100, 0.8));
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  text-align: left;
+  min-width: 40px;
+  white-space: nowrap;
+  font-weight: bold;
+}
+
+.submenu-link:hover {
+  background: linear-gradient(135deg, rgba(0, 40, 80, 0.95), rgba(0, 60, 120, 0.9));
+  border-color: rgba(106, 255, 138, 0.8);
+  box-shadow: 0 6px 20px rgba(106, 255, 138, 0.3);
+  transform: translateX(5px);
+  color: rgba(106, 255, 138, 1);
+  text-shadow: 0 0 8px rgba(106, 255, 138, 0.5);
+}
+
+.submenu-link.active {
+  background: linear-gradient(135deg, rgba(0, 60, 120, 0.95), rgba(0, 80, 140, 0.9));
+  border-color: rgba(106, 255, 138, 1);
+  box-shadow: 0 0 15px rgba(106, 255, 138, 0.6);
+  color: rgba(106, 255, 138, 1);
+}
+
+/* Стрелка для индикации подменю в виде горизонтальных блоков */
+.has-submenu > .sidebar-link::after {
+  content: '▶';
+  position: absolute;
+  right: 10px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: rotate(0deg);
+}
+
+.sidebar:hover .has-submenu > .sidebar-link::after {
+  opacity: 1;
+}
+
+.has-submenu:hover > .sidebar-link::after {
+  color: rgba(106, 255, 138, 0.8);
+  text-shadow: 0 0 8px rgba(106, 255, 138, 0.5);
+  transform: rotate(0deg) scale(1.1);
+}
+
+/* Поправка позиции стрелки */
+.has-submenu > .sidebar-link {
+  position: relative;
+}
+
+/* Убираем все линии соединения */
+.has-submenu::before {
+  display: none;
+}
+
+.sidebar:hover .has-submenu:hover::before {
+  display: none;
+}
+
+/* Убираем изогнутые линии к каждому элементу подменю */
+.submenu li::before {
+  display: none;
+}
+
+.sidebar:hover .has-submenu:hover .submenu li::before {
+  display: none;
+}
+
+/* Убираем пульсирующие точки соединения */
+.submenu li::after {
+  display: none;
+}
+
+.sidebar:hover .has-submenu:hover .submenu li::after {
+  display: none;
+}
+
+/* Невидимая область для плавного перехода от sidebar к submenu */
+.has-submenu::after {
+  content: '';
+  position: absolute;
+  right: -15px;
+  top: 0;
+  bottom: 0;
+  width: 25px;
+  background: transparent;
+  z-index: 99999;
+}
+
+/* Анимации */
+@keyframes flowLine {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 0%; }
+  100% { background-position: 0% 0%; }
+}
+
+@keyframes glowLine {
+  0%, 100% { 
+    border-color: rgba(106, 255, 138, 0.4);
+    filter: drop-shadow(0 0 2px rgba(106, 255, 138, 0.4));
+  }
+  50% { 
+    border-color: rgba(106, 255, 138, 1);
+    filter: drop-shadow(0 0 8px rgba(106, 255, 138, 0.8));
+  }
+}
+
+@keyframes pulseDot {
+  0%, 100% { 
+    transform: translateY(-50%) scale(1);
+    opacity: 0.8;
+    box-shadow: 0 0 5px rgba(106, 255, 138, 0.4);
+  }
+  50% { 
+    transform: translateY(-50%) scale(1.4);
+    opacity: 1;
+    box-shadow: 0 0 15px rgba(106, 255, 138, 0.8);
+  }
+}
+
+@keyframes slideInFromLeft {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes clickPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+/* Дополнительный эффект свечения для активного элемента с подменю */
+.has-submenu:hover > .sidebar-link {
+  box-shadow: 0 0 15px rgba(106, 255, 138, 0.3);
+}

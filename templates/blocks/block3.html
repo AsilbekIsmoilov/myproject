@@ -1,0 +1,105 @@
+{% load static %}
+{% load filters %}
+
+<div id="page-loader"></div>
+<div class="block3">
+  <h2 class="comment-title">Комментарий</h2>
+  <div class="comment-box">
+  {% for i in "1,2,3,4,5,6,7,8,9,10"|split:"," %}
+    {% with comment_field="comment"|add:i %}
+      {% if monthly_scores %}
+        {% with comment=monthly_scores|get_dynamic_attr:comment_field %}
+        {% with call_code=comment|regex_search:"Код звонка:\\s*([\\w_\\-]+)" %}
+            {% if call_code %}
+              {% with record_url=call_code_to_url|get_item:call_code %}
+                
+                <p class="comment-item" style="cursor: pointer;" data-src="{{ record_url }}">{{ i }}) {{ comment|default:"" }}</p>
+                <br>
+              {% endwith %}
+            {% else %}
+              
+              <p class="comment-item">{{ i }}) {{ comment|default:"" }}</p>
+              <br>
+            {% endif %}
+          {% endwith %}
+        {% endwith %}
+      {% else %}
+        {% with comment=selected_operator|get_dynamic_attr:comment_field %}
+        {% with call_code=comment|regex_search:"Код звонка:\\s*([\\w_\\-]+)" %}
+            {% if call_code %}
+              {% with record_url=call_code_to_url|get_item:call_code %}
+                <p class="comment-item" data-src="{{ record_url }}">{{ i }}) {{ comment|default:"" }}</p>
+                <br>
+              {% endwith %}
+            {% else %}
+              <p class="comment-item">{{ i }}) {{ comment|default:"" }}</p>
+            <br>
+            {% endif %}
+          {% endwith %}
+        {% endwith %}
+      {% endif %}
+    {% endwith %}
+    <hr>
+  {% endfor %}
+</div>
+
+  <div class="audio-error-block">
+  <div class="custom-audio-player" data-src="{{ record.record.url }}">
+    <div class="row-controls">
+      <div class="control-group-left">
+        <button class="control-button backward" title="10 сек назад">
+          <img src="{% static 'img/left.png' %}" alt="Назад">
+        </button>
+        <button class="control-button play-pause" title="Play/Pause">
+          <img src="{% static 'img/play.png' %}" alt="Воспроизвести">
+        </button>
+        <button class="control-button forward" title="10 сек вперёд">
+          <img src="{% static 'img/right.png' %}" alt="Вперёд">
+        </button>
+      </div>
+      <input type="range" class="seek-bar" value="0" step="1">
+      <span class="time-display">00:00 / 00:00</span>
+    </div>
+
+    <div class="bottom-controls">
+      <div class="speed-group">
+        <label for="speed-select">Скорость:</label>
+        <select class="speed-select" id="speed-select">
+          <option value="0.75">0.75×</option>
+          <option value="1" selected>1×</option>
+          <option value="1.25">1.25×</option>
+          <option value="1.5">1.5×</option>
+          <option value="2">2×</option>
+        </select>
+      </div>
+
+      <div class="volume-group">
+        <label for="volume-range">Громкость:</label>
+        <input type="range" class="volume-range" min="0" max="1" step="0.01" value="1">
+      </div>
+    </div>
+  </div>
+
+  <div class="error-types">
+    <div class="error-type">
+      <div class="error-circle" data-error-type="25">
+        {% if monthly_scores %}{{ monthly_scores.mis1|default:0 }}{% else %}{{ selected_operator.mis1|default:0 }}{% endif %}
+      </div>
+      <span>Ошибка(-25)</span>
+    </div>
+    <div class="error-type">
+      <div class="error-circle" data-error-type="10">
+        {% if monthly_scores %}{{ monthly_scores.mis2|default:0 }}{% else %}{{ selected_operator.mis2|default:0 }}{% endif %}
+      </div>
+      <span>Ошибка(-10)</span>
+    </div>
+    <div class="error-type">
+      <div class="error-circle" data-error-type="2">
+        {% if monthly_scores %}{{ monthly_scores.mis3|default:0 }}{% else %}{{ selected_operator.mis3|default:0 }}{% endif %}
+      </div>
+      <span>Недочет(-2)</span>
+    </div>
+  </div>
+</div>
+</div>
+<script src="{% static 'block3.js' %}"></script>

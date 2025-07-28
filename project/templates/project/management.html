@@ -1,0 +1,46 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="{% static 'sidebar.css' %}">
+  <link rel="stylesheet" href="{% static 'management.css' %}">
+  <link rel="icon" type="image/png" href="{% static 'img/logoo.png' %}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+<body>
+<div class="fixed-header">
+  <div class="logo-container">
+            <img id="logo"
+                 src="{% static 'img/logo.png' %}"
+                 alt="Company Logo" style="cursor: pointer;width: 231px;margin-top: 9px;margin-left: 58px;">
+    <div class="centered-buttons">
+
+    </div>
+  </div>
+  </div>
+
+  {% include 'project/sidebar.html' %}
+  <div id="pdf-container"></div>
+<script>
+  {% if latest_doc %}
+    const PDF_URL = "{{ latest_doc.pdf_file.url }}";
+  {% else %}
+    const PDF_URL = null;
+  {% endif %}
+</script>
+
+
+  <script src="{% static 'management.js' %}"></script>
+  <script src="{% static 'back.js' %}"></script>
+  <script>
+        const backgrounds = [
+        {% for bg in backgrounds %}
+            "{{ bg.image.url }}"{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+  </script>
+</body>
+</html>

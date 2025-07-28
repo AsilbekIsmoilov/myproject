@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Добавление PDF</title>
+  <link rel="stylesheet" href="{% static 'pdf_page.css' %}">
+  <link rel="stylesheet" href="{% static 'adds.css' %}">
+  <style>
+    .container {
+      display: flex;
+      gap: 20px;
+    }
+    .half {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+
+<div style="text-align: start;">
+  <form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">Выйти</button>
+  </form>
+</div>
+
+<div class="container">
+
+  <!-- Левая часть: формы -->
+  <div class="half">
+    <h2>Добавить PDF в График</h2>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ schedule_form.as_p }}
+    <button type="submit" name="add_schedule">Добавить</button>
+    </form>
+    <h2>Добавить PDF в Начальство</h2>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ management_form.as_p }}
+      <button type="submit" name="add_management">Добавить</button>
+    </form>
+  <div class="half">
+<h2>Список PDF — Графики</h2>
+<h3>График 1000</h3>
+<ul>
+  {% for doc in schedule_docs %}
+    {% if doc.code == '1000' %}
+      <li><a href="{{ doc.pdf_file.url }}" target="_blank">{{ doc.title }}</a> — {{ doc.created_at|date:"d.m.Y H:i" }}</li>
+    {% endif %}
+  {% endfor %}
+</ul>
+
+<h3>График 1009</h3>
+<ul>
+  {% for doc in schedule_docs %}
+    {% if doc.code == '1009' %}
+      <li><a href="{{ doc.pdf_file.url }}" target="_blank">{{ doc.title }}</a> — {{ doc.created_at|date:"d.m.Y H:i" }}</li>
+    {% endif %}
+  {% endfor %}
+</ul>
+
+<h3>График 112</h3>
+<ul>
+  {% for doc in schedule_docs %}
+    {% if doc.code == '112' %}
+      <li><a href="{{ doc.pdf_file.url }}" target="_blank">{{ doc.title }}</a> — {{ doc.created_at|date:"d.m.Y H:i" }}</li>
+    {% endif %}
+  {% endfor %}
+</ul>
+
+    <h2>Список PDF — Начальство</h2>
+    <ul>
+      {% for item in management_docs %}
+        <li><a href="{{ item.pdf_file.url }}" target="_blank">{{ item.title }}</a> — {{ item.created_at|date:"d.m.Y H:i" }}</li>
+      {% empty %}
+        <li>Нет PDF файлов.</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+</div>
+
+</body>
+</html>
