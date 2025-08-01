@@ -5,7 +5,7 @@ import django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
 django.setup()
 
-from django.http import HttpResponse, JsonResponse, HttpResponseServerError
+from django.http import HttpResponse, JsonResponse, HttpResponseServerError, FileResponse, HttpResponseForbidden, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from project.models import *
 from .forms import *
@@ -15,7 +15,6 @@ from io import StringIO
 from project.sheets import get_archive,update_call_data
 from datetime import datetime
 from statistics import mean
-from django.conf import settings
 from django.views.decorators.http import require_http_methods
 import shutil
 from django.contrib.auth.decorators import login_required
@@ -561,3 +560,51 @@ def latest_schedule_redirect(request, code):
         return redirect(latest.pdf_file.url)
     else:
         return redirect('/')
+
+
+
+ALLOWED_HOST = "127.0.0.1:8000"
+
+def is_internal_request(request):
+    referer = request.META.get("HTTP_REFERER", "")
+    is_admin = request.user.is_authenticated and request.user.is_staff
+    return (ALLOWED_HOST in referer) or is_admin
+
+
+def serve_record_by_code(request, call_code):
+    if not is_internal_request(request):
+        return render(request, '404.html', status=404)
+
+    records_path = os.path.join(settings.MEDIA_ROOT, 'records')
+    for ext in ['.mp3', '.wav', '.ogg']:
+        filename = f"{call_code}{ext}"
+        file_path = os.path.join(records_path, filename)
+        if os.path.exists(file_path):
+            return FileResponse(open(file_path, 'rb'), content_type='audio/mpeg')
+
+    raise Http404("Файл не найден")
+
+
+def serve_photos_by_code(request, photo):
+    if not is_internal_request(request):
+        return render(request, '404.html', status=404)
+
+    file_path = os.path.join(settings.MEDIA_ROOT, 'photos', photo)
+    if not os.path.exists(file_path):
+        raise Http404("Фото не найдено")
+
+    ext = os.path.splitext(photo)[1].lower()
+    content_types = {
+        '.jpg': 'image/jpeg',
+        '.jpeg': 'image/jpeg',
+        '.png': 'image/png',
+        '.gif': 'image/gif',
+        '.webp': 'image/webp',
+    }
+    content_type = content_types.get(ext, 'application/octet-stream')
+
+    return FileResponse(open(file_path, 'rb'), content_type=content_type)
+
+
+def trigger_404_view(request, *args, **kwargs):
+    return render(request, '404.html', status=404)

@@ -15,4 +15,7 @@ urlpatterns = [
     path('login/', custom_login, name='login'),
     path('logout/', custom_logout, name='logout'),
     path('latest-schedule/<str:code>/', latest_schedule_redirect, name='latest_schedule'),
+    path("secure-record/<str:call_code>/", serve_record_by_code, name="secure_record"),
+    path("secure-photo/<str:photo>/", serve_photos_by_code, name="secure_photo"),
+
 ]

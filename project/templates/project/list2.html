@@ -53,16 +53,13 @@
                     Нет данных
                     {% endif %}
                 </div>
-          <!-- Группа — неинтерактивная -->
           {% if operator.group %}
           <div>{{operator.group}}</div>
           {% else %}
           <div>Нет данных</div>
           {% endif %}
 
-          <!-- Выбор квартала -->
             <form method="get">
-  <!-- ❗ Обязательно передаём выбранного оператора -->
   <input type="hidden" name="operator-name" value="{{ operator.name }}">
   <select name="quarter" id="quarterSelect" onchange="this.form.submit()">
     <option value="Q1" {% if selected_quarter == 'Q1' %}selected{% endif %}>I Квартал</option>
@@ -75,8 +72,8 @@
 
         <div class="photo">
           {% if operator.photo %}
-          <img src="{{ operator.photo.url }}" alt="Operator Photo"
-             style="pointer-events: none;">
+          <img src="{% url 'secure_photo' operator.photo.name|cut:'photos/' %}" alt="Фото"
+          style="pointer-events: none;">
           {% else %}
           <img src="{% static 'img/profile.png' %}" alt="Default Avatar"
              style="pointer-events: none;">

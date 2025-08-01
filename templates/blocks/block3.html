@@ -11,15 +11,11 @@
         {% with comment=monthly_scores|get_dynamic_attr:comment_field %}
         {% with call_code=comment|regex_search:"Код звонка:\\s*([\\w_\\-]+)" %}
             {% if call_code %}
-              {% with record_url=call_code_to_url|get_item:call_code %}
-                
-                <p class="comment-item" style="cursor: pointer;" data-src="{{ record_url }}">{{ i }}) {{ comment|default:"" }}</p>
-                <br>
-              {% endwith %}
+              <p class="comment-item" style="cursor: pointer;" data-src="{% url 'secure_record' call_code %}">
+                {{ i }}) {{ comment|default:"" }}
+              </p><br>
             {% else %}
-              
-              <p class="comment-item">{{ i }}) {{ comment|default:"" }}</p>
-              <br>
+              <p class="comment-item">{{ i }}) {{ comment|default:"" }}</p><br>
             {% endif %}
           {% endwith %}
         {% endwith %}
@@ -27,13 +23,11 @@
         {% with comment=selected_operator|get_dynamic_attr:comment_field %}
         {% with call_code=comment|regex_search:"Код звонка:\\s*([\\w_\\-]+)" %}
             {% if call_code %}
-              {% with record_url=call_code_to_url|get_item:call_code %}
-                <p class="comment-item" data-src="{{ record_url }}">{{ i }}) {{ comment|default:"" }}</p>
-                <br>
-              {% endwith %}
+              <p class="comment-item" style="cursor: pointer;" data-src="{% url 'secure_record' call_code %}">
+                {{ i }}) {{ comment|default:"" }}
+              </p><br>
             {% else %}
-              <p class="comment-item">{{ i }}) {{ comment|default:"" }}</p>
-            <br>
+              <p class="comment-item">{{ i }}) {{ comment|default:"" }}</p><br>
             {% endif %}
           {% endwith %}
         {% endwith %}
@@ -44,7 +38,7 @@
 </div>
 
   <div class="audio-error-block">
-  <div class="custom-audio-player" data-src="{{ record.record.url }}">
+  <div class="custom-audio-player" data-src="">
     <div class="row-controls">
       <div class="control-group-left">
         <button class="control-button backward" title="10 сек назад">

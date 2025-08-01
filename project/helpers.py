@@ -111,12 +111,18 @@ def extract_and_download_records():
 MONTH_FILE_PATH = ".current_month"
 
 def get_actual_month_from_db():
-    return CallData.objects.order_by('-id').first().month
+    for obj in CallData.objects.order_by('-id'):
+        if obj.month is not None:
+            return obj.month
+    return None
 
 def read_stored_month():
     if os.path.exists(MONTH_FILE_PATH):
-        with open(MONTH_FILE_PATH, 'r') as f:
-            return int(f.read().strip())
+        try:
+            with open(MONTH_FILE_PATH, 'r') as f:
+                return int(f.read().strip())
+        except (ValueError, OSError):
+            return None
     return None
 
 def write_current_month(month):

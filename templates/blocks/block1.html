@@ -14,10 +14,10 @@
             <canvas id="scoreChart" width="150" height="150"></canvas>
             <div class="radial-text">
                 <div class="score-number">
-                    {% if monthly_scores and monthly_scores.mark is not none %}
-                        {{ monthly_scores.mark }}
-                    {% elif selected_operator and selected_operator.mark is not none %}
-                        {{ selected_operator.mark }}
+                    {% if monthly_scores %}
+                        {{ monthly_scores.mark|default_if_none:"Нет данных" }}
+                    {% elif selected_operator and selected_month_param|default:""|add:""|length == 0 %}
+                        {{ selected_operator.mark|default_if_none:"Нет данных" }}
                     {% else %}
                         Нет данных
                     {% endif %}
@@ -85,8 +85,8 @@
 
 <div class="profile-photo">
     {% if selected_operator.photo %}
-        <img src="{{ selected_operator.photo.url }}" alt="Operator Photo"
-             style="pointer-events: none;">
+    <img src="{% url 'secure_photo' selected_operator.photo.name|cut:'photos/' %}" alt="Фото"
+     style="pointer-events: none;">
     {% else %}
         <img src="{% static 'img/profile.png' %}" alt="Default Avatar"
              style="pointer-events: none;">

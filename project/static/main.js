@@ -259,100 +259,6 @@ document.getElementById("groupSelect").addEventListener("change", function () {
   console.log("Выбрана группа:", group);
 });
 
-
-<!--    let currentIndex = -1;-->
-
-<!--function filterDropdown() {-->
-<!--    const input = document.getElementById("operator-name");-->
-<!--    const filter = input.value.toLowerCase();-->
-<!--    const dropdown = document.getElementById("dropdown");-->
-<!--    const items = dropdown.getElementsByClassName("dropdown-item");-->
-
-<!--    if (filter.length === 0) {-->
-<!--        dropdown.style.display = "none";-->
-<!--        return;-->
-<!--    }-->
-
-<!--    let anyVisible = false;-->
-<!--    currentIndex = -1;-->
-
-<!--    for (let i = 0; i < items.length; i++) {-->
-<!--        const item = items[i];-->
-<!--        const name = item.getAttribute("data-name").toLowerCase();-->
-
-<!--        if (name.includes(filter) || name.startsWith(filter)) {-->
-<!--            item.style.display = "block";-->
-<!--            anyVisible = true;-->
-<!--        } else {-->
-<!--            item.style.display = "none";-->
-<!--        }-->
-
-<!--        item.style.backgroundColor = "";-->
-<!--    }-->
-
-<!--    dropdown.style.display = anyVisible ? "block" : "none";-->
-<!--}-->
-
-<!--function highlightItem(items) {-->
-<!--    for (let i = 0; i < items.length; i++) {-->
-<!--        const item = items[i];-->
-<!--        if (i === currentIndex) {-->
-<!--            item.style.backgroundColor = "#ddd";-->
-<!--            item.scrollIntoView({ block: "nearest", behavior: "smooth" });-->
-<!--        } else {-->
-<!--            item.style.backgroundColor = "";-->
-<!--        }-->
-<!--    }-->
-<!--}-->
-
-<!--function handleKeyDown(event) {-->
-<!--    const dropdown = document.getElementById("dropdown");-->
-<!--    const items = Array.from(dropdown.getElementsByClassName("dropdown-item"))-->
-<!--        .filter(item => item.style.display !== "none");-->
-
-<!--    if (items.length === 0) return;-->
-
-<!--    if (event.key === "ArrowDown") {-->
-<!--        event.preventDefault();-->
-<!--        if (currentIndex < items.length - 1) {-->
-<!--            currentIndex++;-->
-<!--            highlightItem(items);-->
-<!--        }-->
-<!--    } else if (event.key === "ArrowUp") {-->
-<!--        event.preventDefault();-->
-<!--        if (currentIndex > 0) {-->
-<!--            currentIndex&#45;&#45;;-->
-<!--            highlightItem(items);-->
-<!--        }-->
-<!--    } else if (event.key === "Enter") {-->
-<!--        event.preventDefault();-->
-<!--        if (currentIndex >= 0 && items[currentIndex]) {-->
-<!--            const selectedName = items[currentIndex].getAttribute("data-name");-->
-<!--            document.getElementById("operator-name").value = selectedName;-->
-<!--            dropdown.style.display = "none";-->
-<!--        }-->
-<!--        document.getElementById("operator-form").submit(); // если форма должна отправляться-->
-<!--    }-->
-<!--}-->
-
-<!--document.getElementById("operator-name").addEventListener("keydown", handleKeyDown);-->
-
-<!--document.addEventListener("click", function(event) {-->
-<!--    const input = document.getElementById("operator-name");-->
-<!--    const dropdown = document.getElementById("dropdown");-->
-<!--    if (!input.contains(event.target) && !dropdown.contains(event.target)) {-->
-<!--        dropdown.style.display = "none";-->
-<!--    }-->
-<!--});-->
-
-<!--document.querySelectorAll(".dropdown-item").forEach(item => {-->
-<!--    item.addEventListener("click", function() {-->
-<!--        const name = this.getAttribute("data-name");-->
-<!--        document.getElementById("operator-name").value = name;-->
-<!--        document.getElementById("dropdown").style.display = "none";-->
-<!--        document.getElementById("operator-form").submit();-->
-<!--    });-->
-<!--});-->
 const backgrounds = [
     "url('/static/img/ttt.jpg')",
     "url('/static/img/background.jpg')",
@@ -364,7 +270,6 @@ let isCooldown = false;
 window.addEventListener('load', () => {
     const savedBg = localStorage.getItem('backgroundImage');
 
-    // Если ранее сохранённого фона нет — установить дефолтный (первый из списка)
     if (!savedBg) {
         const defaultBg = backgrounds[0];
         document.body.style.backgroundImage = defaultBg;

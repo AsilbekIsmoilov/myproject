@@ -1,18 +1,27 @@
+import os  
 from django.contrib import admin
 from .models import *
-
+from django.utils.html import format_html
+from urllib.parse import quote  
 
 
 class CallDataAdmin(admin.ModelAdmin):
-    list_display = ('name', 'photo', 'bl', 'group', 'mark','month')
+    list_display = ('name', 'get_photo_preview', 'bl', 'group', 'mark','month')
     search_fields = ('name',)
     ordering = ('name',)
-
+    def get_photo_preview(self, obj):
+        if obj.photo:
+            filename = os.path.basename(obj.photo.name)
+            url = f"/secure-photo/{quote(filename)}"
+            return format_html(f'<img src="{url}" style="max-height:100px;"/>')
+        return "-"
+    
+    get_photo_preview.short_description = "Фото"
 
 class ScoresForMonthAdmin(admin.ModelAdmin):
-    list_display = ('name', 'operator', 'id','mark','month')  # Добавить другие поля, если необходимо
-    search_fields = ('name',)  # Поиск по имени
-    list_filter = ('operator',)  # Фильтрация по оператору
+    list_display = ('name', 'operator', 'id','mark','month') 
+    search_fields = ('name',)  
+    list_filter = ('operator',)
     ordering = ('name',)  
 
     def get_queryset(self, request):
